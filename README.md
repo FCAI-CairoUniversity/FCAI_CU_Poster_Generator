@@ -129,7 +129,7 @@ Verify:
 
 ---
 
-### 10. Download Poster
+### 10. Optional: Download Poster
 Click:
 
 ```text
@@ -145,6 +145,16 @@ You can use it for:
 - Senior event promotions
 
 ---
+
+### 11. Send The Poster
+Click:
+
+```text
+Submit Poster
+```
+
+The poster will br upoladed to the drive so we can use it in the parties
+--- 
 
 ## ⚠ Best Practices
 
