@@ -45,6 +45,40 @@
       </div>
     </div>
 
+    <div class="graduation-help">
+  <button class="help-header" onclick="togglePrompt()">
+    <span>🎓 Need a Graduation Photo?</span>
+    <span id="promptArrow">▼</span>
+  </button>
+
+  <div class="help-content" id="helpContent">
+    <p>
+      Want to turn your portrait into a professional graduation photo?
+      Upload your image to ChatGPT Only and use this prompt (Not Gemini).
+    </p>
+
+    <div class="prompt-card">
+      <pre id="promptText">Edit this photo and transform the person into a graduation portrait.
+
+Requirements:
+- Dress the person in a realistic graduation gown (robe) and graduation cap
+- Keep the person’s face, hairstyle, facial features, and expression unchanged
+- Make the outfit look natural and properly fitted to the body
+- Add subtle realistic fabric folds and shadows
+- Change the background to pure clean white studio background
+- Improve lighting to look soft and professional
+- Enhance image quality and sharpness
+- Maintain natural skin tone and realistic details
+- Create a professional graduation photoshoot style portrait
+- High resolution, ultra realistic</pre>
+    </div>
+
+    <button class="copy-prompt-btn" onclick="copyPrompt()">
+      📋 Copy Prompt
+    </button>
+  </div>
+</div>
+
     <!-- Name -->
     <div class="field-group">
       <label>Full Name</label>
@@ -66,7 +100,9 @@
     
     <button class="btn btn-primary" onclick="generatePoster()">✨ Generate Poster</button>
     <button class="btn btn-download" id="downloadBtn" disabled onclick="downloadPoster()">⬇ Download PNG</button>
-
+<button class="btn" id="uploadBtn" onclick="submitPoster()" disabled>
+    Submit Poster
+</button>
     <div class="spacer"></div>
     <p class="footer-note">Senior 2027 · FCAI CU<br>Runs fully in your browser — nothing is uploaded.</p>
   </aside>

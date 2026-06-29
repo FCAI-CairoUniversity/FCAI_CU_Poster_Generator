@@ -12,7 +12,7 @@ const TEMPLATES = {
 let activeTemplate = 't1';
 let userPhoto = null;
 const loadedImgs = {};
-
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyYKJKO-PtBlCzxeHQlxt5Q6hfE6hPSw8WKsTThg3t9pF4O1k0Gtr_LHWN1pbs4dvxl/exec";
 // ── Load all template images ──
 Object.entries(TEMPLATES).forEach(([key, cfg]) => {
   const img = new Image();
@@ -116,6 +116,7 @@ function generatePoster() {
   drawDeptLabel(ctx, dept, cfg);
 
   document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('uploadBtn').disabled = false;
 }
 
 // ── Name with ornament lines ──
@@ -233,4 +234,50 @@ function downloadPoster() {
   link.download = `Senior2027_FCAICU_${tmpl}_${name}.png`;
   link.href     = canvas.toDataURL('image/png', 1.0);
   link.click();
+}
+
+function togglePrompt() {
+    const content = document.getElementById("helpContent");
+    const arrow = document.getElementById("promptArrow");
+
+    content.classList.toggle("open");
+    arrow.textContent = content.classList.contains("open") ? "▲" : "▼";
+}
+
+function copyPrompt() {
+    const text = document.getElementById("promptText").innerText;
+
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Prompt copied!");
+    });
+}
+async function submitPoster() {
+    const canvas = document.getElementById("posterCanvas");
+
+    const name = document.getElementById("nameInput").value;
+    const department = document.getElementById("deptSelect").value;
+
+    const imageData = canvas
+        .toDataURL("image/jpeg", 0.8)
+        .split(",")[1];
+
+    const payload = {
+        name,
+        department,
+        image: imageData
+    };
+
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(payload)
+        });
+
+        if (response){
+          alert("The Poster Sent Successfully");
+        }
+    } catch (err) {
+        console.error("Fetch Error:", err);
+    }
 }
