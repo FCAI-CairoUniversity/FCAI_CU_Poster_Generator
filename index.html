@@ -11,7 +11,10 @@
 
   <!-- Left Panel -->
   <aside class="panel">
-    <div class="panel-title">🎓 Poster Generator · FCAI CU</div>
+    <div class="panel-header">
+      <div class="panel-title">🎓 Poster Generator · FCAI CU</div>
+      <button class="info-btn" id="infoBtn" onclick="openInfoModal()" title="View Steps Instructions">ℹ️</button>
+    </div>
 
     <!-- Template selector -->
     <div>
@@ -118,6 +121,59 @@ Requirements:
   </main>
 
 </div>
+
+  <!-- Step-by-Step Info Modal -->
+  <div id="infoModal" class="modal-overlay" onclick="closeInfoModalOnOverlay(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+      <h3 class="modal-title">✨ Poster Creation Steps</h3>
+      
+      <div class="steps-timeline">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4 class="step-title">Get a Graduation Photo</h4>
+            <p>If you don't have a professional graduation photo, toggle the <b>"Need a Graduation Photo?"</b> section below, copy the prompt, and use it in ChatGPT (with your portrait) to generate a realistic graduation photo with a white background.</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4 class="step-title">Select a Template</h4>
+            <p>Choose your preferred design style from the template options (e.g., "Dark Neon" or "Pastel").</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4 class="step-title">Upload & Enter Details</h4>
+            <p>Upload your graduation photo, type your full name (up to 40 characters), and select your department.</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h4 class="step-title">Generate Poster</h4>
+            <p>Click <b>"✨ Generate Poster"</b> to merge your photo, name, and department into the template canvas and see a live preview.</p>
+          </div>
+        </div>
+        
+        <div class="step-item">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h4 class="step-title">Save & Download</h4>
+            <p>Click <b>"⬇ Download PNG"</b> to save the high-res poster locally, or click <b>"Submit Poster"</b> to upload and save it online.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
 
 <script src="scripts/main.js">
 </script>
