@@ -11,10 +11,7 @@
 
   <!-- Left Panel -->
   <aside class="panel">
-    <div class="panel-header">
-      <div class="panel-title">🎓 Poster Generator · FCAI CU</div>
-      <button class="info-btn" id="infoBtn" onclick="openInfoModal()" title="View Steps Instructions">ℹ️</button>
-    </div>
+    <div class="panel-title">🎓 Poster Generator · FCAI CU</div>
 
     <!-- Template selector -->
     <div>
@@ -122,10 +119,15 @@ Requirements:
 
 </div>
 
-  <!-- Step-by-Step Info Modal -->
-  <div id="infoModal" class="modal-overlay" onclick="closeInfoModalOnOverlay(event)">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+  <!-- Floating Info Button -->
+  <button class="floating-info-btn" onclick="openInfoDrawer()" title="View Steps Instructions"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 40 40">
+<path fill="#8bb7f0" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="none" stroke="#4e7ab5" stroke-miterlimit="10" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#fff" d="M20,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S21.1,10,20,10z"></path><path fill="#fff" d="M22,28V16h-5v1h1v11h-1v1h6v-1H22z"></path>
+</svg></button>
+
+  <!-- Step-by-Step Info Side Panel -->
+  <div id="sidePanel" class="side-panel-overlay" onclick="closeInfoDrawerOnOverlay(event)">
+    <div class="side-drawer">
+      <button class="modal-close" onclick="closeInfoDrawer()">&times;</button>
       <h3 class="modal-title">✨ Poster Creation Steps</h3>
       
       <div class="steps-timeline">
@@ -133,7 +135,24 @@ Requirements:
           <div class="step-number">1</div>
           <div class="step-content">
             <h4 class="step-title">Get a Graduation Photo</h4>
-            <p>If you don't have a professional graduation photo, toggle the <b>"Need a Graduation Photo?"</b> section below, copy the prompt, and use it in ChatGPT (with your portrait) to generate a realistic graduation photo with a white background.</p>
+            <p>If you don't have a professional graduation photo, copy the prompt below and use it with your portrait in ChatGPT to generate a realistic graduation photo with a white background:</p>
+            <div class="drawer-prompt-card">
+              <pre id="drawerPromptText">Edit this photo and transform the person into a graduation portrait.
+
+Requirements:
+- Dress the person in a realistic graduation gown (robe) and graduation cap
+- Keep the person’s face, hairstyle, facial features, and expression unchanged
+- Make the outfit look natural and properly fitted to the body
+- Add subtle realistic fabric folds and shadows
+- Change the background to a pure clean white studio background
+- Improve lighting to look soft and professional
+- Enhance image quality and sharpness
+- Maintain natural skin tone and realistic details
+- Create a professional graduation photoshoot style portrait
+- Square composition (1:1 aspect ratio), centered framing with balanced headroom and shoulders fully visible
+- High resolution (at least 2048×2048), ultra-realistic</pre>
+            </div>
+            <button class="drawer-copy-btn" onclick="copyDrawerPrompt()">📋 Copy Prompt</button>
           </div>
         </div>
         
