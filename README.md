@@ -153,7 +153,7 @@ Click:
 Submit Poster
 ```
 
-The poster will be upoladed to the drive so we can use it in the parties
+The poster will be uploaded to the drive so we can use it in the parties
 --- 
 
 ## ⚠ Best Practices

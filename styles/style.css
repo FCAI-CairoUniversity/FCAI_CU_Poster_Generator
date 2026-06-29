@@ -511,3 +511,73 @@
     20%, 60% { transform: translateX(-6px); }
     40%, 80% { transform: translateX(6px); }
   }
+
+  /* Submit Poster button custom styling */
+  #uploadBtn {
+    background: linear-gradient(135deg, #0d9488, #0f766e);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.25);
+    margin-top: 10px;
+  }
+  #uploadBtn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.38);
+  }
+  #uploadBtn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  #uploadBtn.success-state {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3) !important;
+  }
+
+  /* Spinner for loading state */
+  .spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Drive Link Container styling */
+  .drive-link-container {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: rgba(13, 148, 136, 0.1);
+    border: 1px dashed rgba(13, 148, 136, 0.35);
+    border-radius: 8px;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  .drive-link-container a {
+    color: #14b8a6;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .drive-link-container a:hover {
+    color: #2dd4bf;
+    text-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
