@@ -8,9 +8,16 @@
 <link rel="shortcut icon" href="assets/icons/seniors.ico" type="image/x-icon">
 </head>
 <body>
-<div class="app">
 
-  <!-- Left Panel -->
+<!-- ═══ TOP TABS ═══ -->
+<div class="top-tabs">
+  <button class="top-tab active" data-tab="generator" onclick="switchTab('generator')">🎨 Poster Generator</button>
+  <button class="top-tab"        data-tab="gallery"   onclick="switchTab('gallery')">🖼️ Gallery</button>
+</div>
+
+<!-- ═══ GENERATOR TAB ═══ -->
+<div class="app tab-panel" id="tab-generator">
+
   <aside class="panel">
     <div class="panel-title">🎓 Poster Generator · FCAI CU</div>
 
@@ -47,23 +54,19 @@
     </div>
 
     <div class="graduation-help">
-  <button class="help-header" onclick="togglePrompt()">
-    <span>🎓 Need a Graduation Photo?</span>
-    <span id="promptArrow">▼</span>
-  </button>
-
-  <div class="help-content" id="helpContent">
-    <p>
-      Want to turn your portrait into a professional graduation photo?
-      Upload your image to ChatGPT Only and use this prompt (Not Gemini).
-    </p>
-
-    <div class="prompt-card">
-      <pre id="promptText">Edit this photo and transform the person into a graduation portrait.
+      <button class="help-header" onclick="togglePrompt()">
+        <span>🎓 Need a Graduation Photo?</span>
+        <span id="promptArrow">▼</span>
+      </button>
+      <div class="help-content" id="helpContent">
+        <p>Want to turn your portrait into a professional graduation photo?
+           Upload your image to ChatGPT Only and use this prompt (Not Gemini).</p>
+        <div class="prompt-card">
+          <pre id="promptText">Edit this photo and transform the person into a graduation portrait.
 
 Requirements:
 - Dress the person in a realistic graduation gown (robe) and graduation cap
-- Keep the person’s face, hairstyle, facial features, and expression unchanged
+- Keep the person's face, hairstyle, facial features, and expression unchanged
 - Make the outfit look natural and properly fitted to the body
 - Add subtle realistic fabric folds and shadows
 - Change the background to a pure clean white studio background
@@ -74,13 +77,10 @@ Requirements:
 - Square composition (1:1 aspect ratio), centered framing with balanced headroom and shoulders fully visible
 - High resolution (at least 2048×2048), ultra-realistic
 </pre>
+        </div>
+        <button class="copy-prompt-btn" onclick="copyPrompt()">📋 Copy Prompt</button>
+      </div>
     </div>
-
-    <button class="copy-prompt-btn" onclick="copyPrompt()">
-      📋 Copy Prompt
-    </button>
-  </div>
-</div>
 
     <!-- Student ID -->
     <div class="field-group">
@@ -107,20 +107,18 @@ Requirements:
         <option value="Decision Support">Decision Support</option>
       </select>
     </div>
-    
+
     <button class="btn btn-primary" onclick="generatePoster()">✨ Generate Poster</button>
     <button class="btn btn-download" id="downloadBtn" disabled onclick="downloadPoster()">⬇ Download PNG</button>
-<button class="btn" id="uploadBtn" onclick="submitPoster()" disabled>
-    Submit Poster
-</button>
-    <div id="driveLinkContainer" class="drive-link-container" style="display: none;">
-        <a id="driveLink" href="#" target="_blank">🌐 View Submitted Poster on Drive ↗</a>
+    <button class="btn" id="uploadBtn" onclick="submitPoster()" disabled>Submit Poster</button>
+
+    <div id="driveLinkContainer" class="drive-link-container" style="display:none;">
+      <a id="driveLink" href="#" target="_blank">🌐 View Submitted Poster on Drive ↗</a>
     </div>
     <div class="spacer"></div>
     <p class="footer-note">Senior 2027 · FCAI CU<br>Runs in your browser — nothing is uploaded unless you click "Submit Poster".</p>
   </aside>
 
-  <!-- Preview -->
   <main class="preview-area">
     <div class="poster-wrap">
       <canvas id="posterCanvas"></canvas>
@@ -128,31 +126,61 @@ Requirements:
     </div>
   </main>
 
-</div>
+</div><!-- /tab-generator -->
 
-  <!-- Floating Info Button -->
-  <button class="floating-info-btn" onclick="openInfoDrawer()" title="View Steps Instructions"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100" viewBox="0 0 40 40">
-<path fill="#8bb7f0" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="none" stroke="#4e7ab5" stroke-miterlimit="10" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"></path><path fill="#fff" d="M20,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S21.1,10,20,10z"></path><path fill="#fff" d="M22,28V16h-5v1h1v11h-1v1h6v-1H22z"></path>
-</svg></button>
+<!-- ═══ GALLERY TAB ═══ -->
+<div class="tab-panel gallery-page" id="tab-gallery" style="display:none;">
 
-  <!-- Step-by-Step Info Side Panel -->
-  <div id="sidePanel" class="side-panel-overlay" onclick="closeInfoDrawerOnOverlay(event)">
-    <div class="side-drawer">
-      <button class="modal-close" onclick="closeInfoDrawer()">&times;</button>
-      <h3 class="modal-title">✨ Poster Creation Steps</h3>
-      
-      <div class="steps-timeline">
-        <div class="step-item">
-          <div class="step-number">1</div>
-          <div class="step-content">
-            <h4 class="step-title">Get a Graduation Photo</h4>
-            <p>If you don't have a professional graduation photo, copy the prompt below and use it with your portrait in ChatGPT to generate a realistic graduation photo with a white background:</p>
-            <div class="drawer-prompt-card">
-              <pre id="drawerPromptText">Edit this photo and transform the person into a graduation portrait.
+  <div class="gallery-header">
+    <h2>🖼️ Senior 2027 Gallery</h2>
+    <p>All submitted graduation posters, grouped by department.</p>
+    <div class="gallery-controls">
+      <input  type="text" id="gallerySearch"     class="gallery-search"  placeholder="🔍 Search by name…" oninput="renderGallery()">
+      <select id="galleryDeptFilter" class="gallery-filter" onchange="renderGallery()">
+        <option value="">All Departments</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Artificial Intelligence">Artificial Intelligence</option>
+        <option value="Information Systems">Information Systems</option>
+        <option value="Information Technology">Information Technology</option>
+        <option value="Decision Support">Decision Support</option>
+      </select>
+      <button class="btn-refresh" onclick="loadGallery(true)">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <div id="galleryStatus" class="gallery-status">Loading posters…</div>
+  <div id="galleryContent" class="gallery-content"></div>
+
+</div><!-- /tab-gallery -->
+
+<!-- ═══ FLOATING INFO BUTTON ═══ -->
+<button class="floating-info-btn" onclick="openInfoDrawer()" title="View Steps Instructions">
+  <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 40 40">
+    <path fill="#8bb7f0" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"/>
+    <path fill="none" stroke="#4e7ab5" stroke-miterlimit="10" d="M20,38.5C9.8,38.5,1.5,30.2,1.5,20S9.8,1.5,20,1.5S38.5,9.8,38.5,20S30.2,38.5,20,38.5z"/>
+    <path fill="#fff" d="M20,10c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S21.1,10,20,10z"/>
+    <path fill="#fff" d="M22,28V16h-5v1h1v11h-1v1h6v-1H22z"/>
+  </svg>
+</button>
+
+<!-- ═══ SIDE DRAWER ═══ -->
+<div id="sidePanel" class="side-panel-overlay" onclick="closeInfoDrawerOnOverlay(event)">
+  <div class="side-drawer">
+    <button class="modal-close" onclick="closeInfoDrawer()">&times;</button>
+    <h3 class="modal-title">✨ Poster Creation Steps</h3>
+    <div class="steps-timeline">
+
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4 class="step-title">Get a Graduation Photo</h4>
+          <p>If you don't have a professional graduation photo, copy the prompt below and use it with your portrait in ChatGPT to generate a realistic graduation photo with a white background:</p>
+          <div class="drawer-prompt-card">
+            <pre id="drawerPromptText">Edit this photo and transform the person into a graduation portrait.
 
 Requirements:
 - Dress the person in a realistic graduation gown (robe) and graduation cap
-- Keep the person’s face, hairstyle, facial features, and expression unchanged
+- Keep the person's face, hairstyle, facial features, and expression unchanged
 - Make the outfit look natural and properly fitted to the body
 - Add subtle realistic fabric folds and shadows
 - Change the background to a pure clean white studio background
@@ -162,58 +190,67 @@ Requirements:
 - Create a professional graduation photoshoot style portrait
 - Square composition (1:1 aspect ratio), centered framing with balanced headroom and shoulders fully visible
 - High resolution (at least 2048×2048), ultra-realistic</pre>
-            </div>
-            <button class="drawer-copy-btn" onclick="copyDrawerPrompt()">📋 Copy Prompt</button>
           </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-number">2</div>
-          <div class="step-content">
-            <h4 class="step-title">Select a Template</h4>
-            <p>Choose your preferred design style from the template options (e.g., "Dark Neon" or "Pastel").</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-number">3</div>
-          <div class="step-content">
-            <h4 class="step-title">Upload & Enter Details</h4>
-            <p>Upload your graduation photo, type your Student ID, full name (up to 40 characters), and select your department.</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-number">4</div>
-          <div class="step-content">
-            <h4 class="step-title">Generate Poster</h4>
-            <p>Click <b>"✨ Generate Poster"</b> to merge your photo, name, and department into the template canvas and see a live preview.</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-number">5</div>
-          <div class="step-content">
-            <h4 class="step-title">Save & Download</h4>
-            <p>Click <b>"⬇ Download PNG"</b> to save the high-res poster locally on your device.</p>
-          </div>
-        </div>
-        
-        <div class="step-item">
-          <div class="step-number">6</div>
-          <div class="step-content">
-            <h4 class="step-title">Submit Poster (Essential!)</h4>
-            <p>Click <b>"Submit Poster"</b> to upload and save your poster online. <b>This step is essential</b> to make sure your poster is registered in the graduation database/list.</p>
-          </div>
+          <button class="drawer-copy-btn" onclick="copyDrawerPrompt()">📋 Copy Prompt</button>
         </div>
       </div>
+
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4 class="step-title">Select a Template</h4>
+          <p>Choose your preferred design style from the template options.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4 class="step-title">Upload & Enter Details</h4>
+          <p>Upload your graduation photo, type your Student ID, full name, and select your department.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4 class="step-title">Generate Poster</h4>
+          <p>Click <b>"✨ Generate Poster"</b> to merge everything into the canvas.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h4 class="step-title">Save & Download</h4>
+          <p>Click <b>"⬇ Download PNG"</b> to save the high-res poster on your device.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <h4 class="step-title">Submit Poster (Essential!)</h4>
+          <p>Click <b>"Submit Poster"</b> to register your poster in the graduation database.</p>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-number">7</div>
+        <div class="step-content">
+          <h4 class="step-title">Browse the Gallery</h4>
+          <p>Switch to the <b>"🖼️ Gallery"</b> tab at the top to see everyone's submitted posters, grouped by department.</p>
+        </div>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="toast-container"></div>
+<!-- ═══ TOAST ═══ -->
+<div id="toastContainer" class="toast-container"></div>
 
-<script src="scripts/main.js">
-</script>
+<script src="scripts/main.js"></script>
+<script src="scripts/gallery.js"></script>
 </body>
 </html>
