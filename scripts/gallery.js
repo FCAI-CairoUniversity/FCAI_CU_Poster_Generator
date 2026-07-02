@@ -72,7 +72,7 @@ function loadGallery(forceRefresh) {
   tag.onerror = function () {
     clearTimeout(timer);
     cleanup(cbName, tag);
-    statusEl.textContent = '⚠️ Could not reach the server. Check the Apps Script URL / deployment.';
+    statusEl.textContent = '⚠️ Could not reach the server. Try use another browser.';
     statusEl.classList.add('error');
   };
   document.body.appendChild(tag);
