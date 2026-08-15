@@ -11,7 +11,7 @@
  */
 
 // ── Config ──────────────────────────────────────────────────
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9nrDQf3NFl6yWRScUnoIPfKANP_cEUEv0eUOLQbps2eTpYkeT65zIpOhyKK9iZNuc/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRxaBxVwxLgwNfFujhU9UjmW3WKTS-fxueXKNahIUqIw4oN5kCvCgKpP2qteoSVTCm/exec";
 
 // ── State ────────────────────────────────────────────────────
 let rawPosters      = [];   // all posters from API (unfiltered)
@@ -91,22 +91,42 @@ function showError(msg) {
   totalCount.textContent   = "Error";
 }
 
-function isPosterDone(poster) {
-  if (!poster) return false;
-  return Boolean(
-    poster.okStatus === true ||
+function getPosterState(poster) {
+  if (!poster) return "pending_username";
+  const isOk = poster.okStatus === true;
+  const hasInsta = Boolean(
+    poster.hasInstagram === true ||
     (poster.instagram && String(poster.instagram).trim() !== "" && String(poster.instagram).trim() !== "-")
   );
+
+  if (isOk) return "verified";          // Admin verified OK
+  if (hasInsta) return "username_added"; // Username added, not yet marked OK
+  return "pending_username";            // Needs username
 }
 
-// ── Update pending badge count ──────────────────────────────
+function isPosterDone(poster) {
+  const state = getPosterState(poster);
+  return state === "verified" || state === "username_added";
+}
+
+const notPostedCount   = document.getElementById("notPostedCount");
+const missingUserCount  = document.getElementById("missingUserCount");
+const postedCount       = document.getElementById("postedCount");
+
+// ── Update badge counts ─────────────────────────────────────
 function updatePendingCount() {
-  const n = rawPosters.filter(p => !isPosterDone(p)).length;
-  if (pendingCount) pendingCount.textContent = n;
+  const notPosted = rawPosters.filter(p => p.okStatus !== true).length;
+  const missing   = rawPosters.filter(p => getPosterState(p) === "pending_username").length;
+  const posted    = rawPosters.filter(p => p.okStatus === true).length;
+
+  if (notPostedCount)   notPostedCount.textContent   = notPosted;
+  if (missingUserCount) missingUserCount.textContent  = missing;
+  if (postedCount)      postedCount.textContent       = posted;
+  if (pendingCount)     pendingCount.textContent      = notPosted;
 }
 
 // ════════════════════════════════════════════════════════════
-//  VIEW TOGGLE  ("all" / "pending")
+//  VIEW TOGGLE  ("all" / "not_posted" / "missing_username" / "posted")
 // ════════════════════════════════════════════════════════════
 function setView(view) {
   activeView  = view;
@@ -125,12 +145,22 @@ function setView(view) {
 
 function applyView() {
   // Build viewPosters based on mode
-  viewPosters = activeView === "pending"
-    ? rawPosters.filter(p => !isPosterDone(p))
-    : rawPosters.slice();
+  if (activeView === "not_posted" || activeView === "pending") {
+    viewPosters = rawPosters.filter(p => p.okStatus !== true);
+  } else if (activeView === "missing_username") {
+    viewPosters = rawPosters.filter(p => getPosterState(p) === "pending_username");
+  } else if (activeView === "posted") {
+    viewPosters = rawPosters.filter(p => p.okStatus === true);
+  } else {
+    viewPosters = rawPosters.slice();
+  }
 
   // Update header count
-  totalCount.textContent = viewPosters.length + (activeView === "pending" ? " Pending" : " Posters");
+  let label = " Posters";
+  if (activeView === "not_posted" || activeView === "pending") label = " Not on IG";
+  else if (activeView === "missing_username") label = " Missing Username";
+  else if (activeView === "posted") label = " Posted";
+  totalCount.textContent = viewPosters.length + label;
 
   buildDeptChips();
   applyFilter();
@@ -316,13 +346,18 @@ function buildCard(poster) {
       </div>`;
   }
 
-  const done = isPosterDone(poster);
+  const state = getPosterState(poster);
 
-  // Done badge (always shown for OK posters)
-  if (done) {
+  // Badge on Image
+  if (state === "verified") {
     const badge       = document.createElement("div");
     badge.className   = "g-done-badge";
-    badge.textContent = "Done";
+    badge.textContent = "Posted on IG";
+    imgWrap.appendChild(badge);
+  } else if (state === "username_added") {
+    const badge       = document.createElement("div");
+    badge.className   = "g-insta-badge-pill";
+    badge.innerHTML   = "⏳ Not on IG Yet";
     imgWrap.appendChild(badge);
   }
 
@@ -341,8 +376,28 @@ function buildCard(poster) {
 
   body.append(nameEl, deptEl);
 
-  /* ── Non-OK: show warning + enabled button ── */
-  if (!done) {
+  if (state === "verified") {
+    const statusBox     = document.createElement("div");
+    statusBox.className = "g-card-status-box verified-ok";
+    statusBox.innerHTML =
+      `<span class="g-card-status-icon">✓</span>` +
+      `<div class="g-card-status-text">` +
+        `<strong>Posted on Instagram</strong>` +
+        `<span>Status confirmed by admin</span>` +
+      `</div>`;
+    body.appendChild(statusBox);
+  } else if (state === "username_added") {
+    const statusBox     = document.createElement("div");
+    statusBox.className = "g-card-status-box insta-added";
+    statusBox.innerHTML =
+      `<span class="g-card-status-icon">📸</span>` +
+      `<div class="g-card-status-text">` +
+        `<strong>Username Added</strong>` +
+        `<span>Not posted on Instagram yet</span>` +
+      `</div>`;
+    body.appendChild(statusBox);
+  } else {
+    /* ── Non-OK & No Username: show warning + enabled button ── */
     const warn     = document.createElement("div");
     warn.className = "g-card-warning";
     warn.innerHTML =
@@ -496,9 +551,11 @@ function submitUsername() {
 }
 
 function onSubmitSuccess() {
-  // Mark poster as OK in rawPosters (real-time, no re-fetch needed)
+  // Mark poster as having Instagram in rawPosters (real-time, no re-fetch needed)
   const poster = rawPosters.find(p => String(p.id) === String(activeStudentId));
-  if (poster) poster.okStatus = true;
+  if (poster) {
+    poster.hasInstagram = true;
+  }
 
   // Update pending count badge
   updatePendingCount();

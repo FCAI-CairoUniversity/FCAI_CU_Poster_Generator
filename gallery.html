@@ -31,11 +31,19 @@
 <div class="g-toggle-wrap">
   <div class="g-toggle" id="viewToggle">
     <button class="g-toggle-btn active" data-view="all" onclick="setView('all')">
-      🖼 All Posters
+      🖼 All
     </button>
-    <button class="g-toggle-btn" data-view="pending" onclick="setView('pending')">
-      ⏳ Pending Only
-      <span class="g-toggle-count" id="pendingCount"></span>
+    <button class="g-toggle-btn" data-view="not_posted" onclick="setView('not_posted')">
+      ⏳ Not on IG Yet
+      <span class="g-toggle-count" id="notPostedCount"></span>
+    </button>
+    <button class="g-toggle-btn" data-view="missing_username" onclick="setView('missing_username')">
+      ⚠️ Missing Username
+      <span class="g-toggle-count" id="missingUserCount"></span>
+    </button>
+    <button class="g-toggle-btn" data-view="posted" onclick="setView('posted')">
+      ✓ Posted on IG
+      <span class="g-toggle-count" id="postedCount"></span>
     </button>
   </div>
 </div>

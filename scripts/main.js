@@ -8,7 +8,7 @@ const TEMPLATES = {
 let activeTemplate = 't1';
 let userPhoto = null;
 const loadedImgs = {};
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9nrDQf3NFl6yWRScUnoIPfKANP_cEUEv0eUOLQbps2eTpYkeT65zIpOhyKK9iZNuc/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRxaBxVwxLgwNfFujhU9UjmW3WKTS-fxueXKNahIUqIw4oN5kCvCgKpP2qteoSVTCm/exec";
 const font = new FontFace('NameFont', 'url(./assets/fonts/CaveatBrush-Regular.ttf)');
 
 font.load().then((loadedFont) => {
