@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior 2027 – Gallery · FCAI CU</title>
+<link rel="shortcut icon" href="assets/icons/seniors.ico" type="image/x-icon">
+<link rel="stylesheet" href="styles/style.css">
+<link rel="stylesheet" href="styles/gallery.css">
+</head>
+<body class="gallery-body">
+
+<!-- ══ Header ══════════════════════════════════════════════ -->
+<header class="g-header">
+  <div class="g-header-inner">
+    <a href="index.html" class="g-back-btn" title="Back to Generator">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </a>
+    <div class="g-logo">
+      <span class="g-logo-icon">🎓</span>
+      <span>Senior 2027 Gallery · FCAI CU</span>
+    </div>
+    <div class="g-count-badge" id="totalCount">Loading…</div>
+  </div>
+</header>
+
+<!-- ══ View Toggle ════════════════════════════════════════ -->
+<div class="g-toggle-wrap">
+  <div class="g-toggle" id="viewToggle">
+    <button class="g-toggle-btn active" data-view="all" onclick="setView('all')">
+      🖼 All Posters
+    </button>
+    <button class="g-toggle-btn" data-view="pending" onclick="setView('pending')">
+      ⏳ Pending Only
+      <span class="g-toggle-count" id="pendingCount"></span>
+    </button>
+  </div>
+</div>
+
+<!-- ══ Controls bar (search + per-page) ══════════════════════ -->
+<div class="g-controls-wrap">
+
+  <!-- Search -->
+  <div class="g-search-box">
+    <svg class="g-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input type="text" id="searchInput" placeholder="Search by name…"
+           autocomplete="off" spellcheck="false">
+    <button class="g-search-clear" id="clearSearch" title="Clear" style="display:none">✕</button>
+  </div>
+
+  <!-- Per-page selector -->
+  <div class="g-perpage-wrap">
+    <label class="g-perpage-label" for="perPageSelect">Show</label>
+    <select id="perPageSelect" class="g-perpage-select">
+      <option value="12">12</option>
+      <option value="24">24</option>
+      <option value="48">48</option>
+      <option value="0">All</option>
+    </select>
+    <label class="g-perpage-label" for="perPageSelect">per page</label>
+  </div>
+
+</div>
+
+<!-- ══ Department filter chips ════════════════════════════ -->
+<div class="g-dept-wrap" id="deptWrap" style="display:none">
+  <div class="g-dept-chips" id="deptChips"></div>
+</div>
+
+<!-- ══ Result info ════════════════════════════════════════ -->
+<div class="g-result-bar" id="resultBar" style="display:none">
+  <span id="resultInfo"></span>
+  <button class="g-clear-filters" id="clearFiltersBtn" onclick="clearAllFilters()">
+    ✕ Clear filters
+  </button>
+</div>
+
+<!-- ══ Grid ════════════════════════════════════════════════ -->
+<main class="g-main">
+  <div class="g-grid" id="grid">
+    <div class="g-skeleton"></div><div class="g-skeleton"></div>
+    <div class="g-skeleton"></div><div class="g-skeleton"></div>
+    <div class="g-skeleton"></div><div class="g-skeleton"></div>
+  </div>
+  <div class="g-empty" id="emptyState" style="display:none">
+    <div class="g-empty-icon">🔍</div>
+    <p>No posters match your filters.</p>
+    <button class="g-retry-btn" onclick="clearAllFilters()">Clear Filters</button>
+  </div>
+  <div class="g-error" id="errorState" style="display:none">
+    <div class="g-empty-icon">⚠️</div>
+    <p id="errorMsg">Could not load posters.</p>
+    <button class="g-retry-btn" onclick="loadPosters()">Retry</button>
+  </div>
+</main>
+
+<!-- ══ Pagination ══════════════════════════════════════════ -->
+<nav class="g-pagination" id="pagination" style="display:none">
+  <button class="g-page-btn" id="prevBtn" onclick="changePage(-1)">← Prev</button>
+  <div class="g-page-nums" id="pageNums"></div>
+  <button class="g-page-btn" id="nextBtn" onclick="changePage(1)">Next →</button>
+</nav>
+
+<!-- ══ Add Username Modal ══════════════════════════════════ -->
+<div class="g-modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="g-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="g-modal-close" onclick="closeModal()" title="Close">✕</button>
+    <div class="g-modal-icon">📸</div>
+    <h2 class="g-modal-title" id="modalTitle">Add Instagram Username</h2>
+    <p class="g-modal-sub">Enter your Instagram username for the graduation book.</p>
+
+    <!-- Warning block -->
+    <div class="g-modal-warning">
+      <div class="g-modal-warning-row">
+        <span>🔒</span>
+        <span>Your username is <strong>private</strong> — only admins can see it. It will <strong>never appear publicly</strong> on the gallery.</span>
+      </div>
+      <div class="g-modal-warning-row">
+        <span>⚠️</span>
+        <span>This action is <strong>permanent</strong> — you won't be able to change or delete your username after saving.</span>
+      </div>
+    </div>
+
+    <div class="g-modal-field">
+      <span class="g-modal-at">@</span>
+      <input type="text" id="instaInput" placeholder="your_username"
+             maxlength="30" autocomplete="off" autocapitalize="none" spellcheck="false"
+             oninput="onInstaInput()" onkeydown="if(event.key==='Enter') submitUsername()">
+    </div>
+    <div class="g-modal-hint" id="instaHint"></div>
+    <button class="g-modal-submit" id="modalSubmitBtn" onclick="submitUsername()" disabled>
+      Save Username
+    </button>
+  </div>
+</div>
+
+<!-- ══ Toast ═══════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="scripts/gallery.js"></script>
+</body>
+</html>

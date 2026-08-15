@@ -8,7 +8,7 @@ const TEMPLATES = {
 let activeTemplate = 't1';
 let userPhoto = null;
 const loadedImgs = {};
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwY4rKDOicw2u9I0VtSy0vBToSJyAAFtCCSTVe1POePbluuBGWI6QUloD-eu3493E4/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEeiMHK8xU41gTMWyCVV_RkWGOJPKeVThSPBM6xjMisuBUZi8fh09IaZ4wYYHfx-GK/exec";
 const font = new FontFace('NameFont', 'url(./assets/fonts/CaveatBrush-Regular.ttf)');
 
 font.load().then((loadedFont) => {
@@ -367,6 +367,14 @@ async function submitPoster() {
     const name = document.getElementById("nameInput").value;
     const department = document.getElementById("deptSelect").value;
 
+    // Read Instagram — strip leading @
+    const instaRaw = (document.getElementById("instaInput") || {}).value || "";
+    const instagram = instaRaw.trim().replace(/^@+/, "");
+
+    // Read Show In Gallery toggle
+    const showInGalleryEl = document.getElementById("showInGalleryCheck");
+    const showInGallery = showInGalleryEl ? showInGalleryEl.checked : true;
+
     const imageData = canvas
         .toDataURL("image/jpeg", 0.8)
         .split(",")[1];
@@ -375,7 +383,9 @@ async function submitPoster() {
         id,
         name,
         department,
-        image: imageData
+        image: imageData,
+        instagram,
+        showInGallery: showInGallery
     };
 
     const originalText = uploadBtn.innerHTML;
@@ -472,3 +482,14 @@ document.getElementById('deptSelect').addEventListener('change', function() {
     this.classList.remove('error');
     disableActionButtons();
 });
+
+function updateGalleryToggle() {
+    const check = document.getElementById("showInGalleryCheck");
+    const desc = document.getElementById("galleryToggleDesc");
+    if (!check || !desc) return;
+    if (check.checked) {
+        desc.textContent = "Your poster will appear in the public gallery with your photo.";
+    } else {
+        desc.textContent = "Your name will be listed in the gallery with a dummy image (photo hidden).";
+    }
+}

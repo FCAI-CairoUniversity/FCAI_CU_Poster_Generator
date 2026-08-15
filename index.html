@@ -8,6 +8,19 @@
 <link rel="shortcut icon" href="assets/icons/seniors.ico" type="image/x-icon">
 </head>
 <body>
+
+<!-- ★ Gallery Top Banner ★ -->
+<div class="gallery-top-banner">
+  <span class="gallery-banner-text">🎓 Senior 2027 Posters are live!</span>
+  <a href="gallery.html" class="gallery-banner-btn">
+    🖼 View Gallery
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  </a>
+</div>
+
 <div class="app">
 
   <!-- Left Panel -->
@@ -107,7 +120,38 @@ Requirements:
         <option value="Decision Support">Decision Support</option>
       </select>
     </div>
-    
+
+    <!-- ★ Instagram Username – highlighted field -->
+    <div class="field-group insta-field-group">
+      <label class="insta-label">
+        <span class="insta-label-icon">📸</span>
+        Instagram Username
+        <span class="insta-badge">Optional</span>
+      </label>
+      <div class="insta-input-wrap">
+        <span class="insta-at">@</span>
+        <input type="text" id="instaInput" placeholder="your_username"
+               maxlength="30" autocomplete="off" autocapitalize="none" spellcheck="false">
+      </div>
+      <span class="hint insta-hint">
+        🔒 Saved privately — only admins can see it. Won't appear on the gallery.
+      </span>
+    </div>
+
+    <!-- Show in Gallery toggle -->
+    <div class="gallery-toggle-row">
+      <div class="gallery-toggle-info">
+        <span class="gallery-toggle-title">🖼 Show in Gallery</span>
+        <span class="gallery-toggle-desc" id="galleryToggleDesc">Your poster will appear in the public gallery with your photo.</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="showInGalleryCheck" checked onchange="updateGalleryToggle()">
+        <span class="toggle-track">
+          <span class="toggle-thumb"></span>
+        </span>
+      </label>
+    </div>
+
     <button class="btn btn-primary" onclick="generatePoster()">✨ Generate Poster</button>
     <button class="btn btn-download" id="downloadBtn" disabled onclick="downloadPoster()">⬇ Download PNG</button>
 <button class="btn" id="uploadBtn" onclick="submitPoster()" disabled>

@@ -1,10 +1,72 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
+
+/* ── Gallery Top Banner ─────────────────────────────────── */
+.gallery-top-banner {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 11px 20px;
+  background: linear-gradient(90deg, #0f0720 0%, #1a0a3a 25%, #0d1a40 50%, #1a0a3a 75%, #0f0720 100%);
+  background-size: 200% 100%;
+  animation: banner-shimmer 4s linear infinite;
+  border-bottom: 1px solid rgba(109,40,217,0.4);
+  box-shadow: 0 2px 20px rgba(109,40,217,0.25), 0 0 40px rgba(77,142,219,0.1);
+  flex-wrap: wrap;
+}
+@keyframes banner-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.gallery-banner-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #c4b5fd;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.gallery-banner-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 18px;
+  background: linear-gradient(135deg, #6d28d9, #4d8edb);
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-shadow: 0 0 0 2px rgba(109,40,217,0.4), 0 4px 16px rgba(109,40,217,0.4);
+  animation: btn-glow 2s ease-in-out infinite;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.gallery-banner-btn:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 0 0 3px rgba(109,40,217,0.6), 0 6px 24px rgba(109,40,217,0.6);
+}
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(109,40,217,0.4), 0 4px 16px rgba(109,40,217,0.35); }
+  50%       { box-shadow: 0 0 0 3px rgba(77,142,219,0.6), 0 4px 24px rgba(77,142,219,0.5); }
+}
+@media (max-width: 500px) {
+  .gallery-banner-text { font-size: 11px; }
+  .gallery-banner-btn  { font-size: 12px; padding: 6px 14px; }
+}
+
+
+body {
     background: #0d0d14;
     color: #e8eaf0;
     font-family: 'Segoe UI', system-ui, sans-serif;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: stretch;
   }
   .app {
@@ -119,6 +181,167 @@
   .spacer { flex: 1; }
   .footer-note { font-size: 10px; color: #1e3050; text-align: center; line-height: 1.6; }
   hr { border: none; border-top: 1px solid #141e34; }
+
+  /* ── Instagram highlighted field ── */
+  .insta-field-group {
+    background: linear-gradient(135deg, rgba(131,58,180,0.07), rgba(253,29,29,0.05), rgba(252,176,69,0.07));
+    border: 1px solid rgba(193,53,132,0.25);
+    border-radius: 12px;
+    padding: 12px 12px 10px;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(193,53,132,0.08), 0 4px 16px rgba(131,58,180,0.1);
+    animation: insta-pulse 3s ease-in-out infinite;
+  }
+  @keyframes insta-pulse {
+    0%, 100% { box-shadow: 0 0 0 1px rgba(193,53,132,0.08), 0 4px 16px rgba(131,58,180,0.1); }
+    50%       { box-shadow: 0 0 0 1px rgba(193,53,132,0.18), 0 4px 24px rgba(193,53,132,0.18); }
+  }
+  .insta-label {
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #c13584 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+  .insta-label-icon { font-size: 13px; }
+  .insta-badge {
+    margin-left: auto;
+    background: rgba(193,53,132,0.15);
+    color: #c13584;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    letter-spacing: 0.06em;
+  }
+  .insta-input-wrap {
+    display: flex;
+    align-items: center;
+    background: #0d1a30;
+    border: 1px solid rgba(193,53,132,0.25);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .insta-input-wrap:focus-within {
+    border-color: #c13584;
+    box-shadow: 0 0 0 3px rgba(193,53,132,0.12);
+  }
+  .insta-at {
+    padding: 0 8px 0 12px;
+    color: #c13584;
+    font-size: 14px;
+    font-weight: 700;
+    user-select: none;
+  }
+  .insta-input-wrap input {
+    flex: 1;
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 9px 10px 9px 0 !important;
+    color: #e8eaf0;
+    font-size: 13px;
+  }
+  .insta-hint { color: #6a3a5a !important; font-size: 10px !important; }
+
+  /* ── Show in Gallery toggle row ── */
+  .gallery-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #080e1c;
+    border: 1px solid #1a2f50;
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+  .gallery-toggle-row:has(input:checked) {
+    border-color: rgba(77,142,219,0.35);
+    background: rgba(77,142,219,0.04);
+  }
+  .gallery-toggle-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+  }
+  .gallery-toggle-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #c8d8f0;
+    letter-spacing: 0.03em;
+  }
+  .gallery-toggle-desc {
+    font-size: 10px;
+    color: #3a5a80;
+    line-height: 1.4;
+  }
+  /* iOS-style toggle switch */
+  .toggle-switch {
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .toggle-switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .toggle-track {
+    display: block;
+    width: 44px;
+    height: 24px;
+    background: #1a2f50;
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.25s;
+    border: 1px solid #2a4060;
+  }
+  .toggle-switch input:checked + .toggle-track {
+    background: linear-gradient(135deg, #1a6adb, #4d8edb);
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(77,142,219,0.35);
+  }
+  .toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    background: #4a6a9a;
+    border-radius: 50%;
+    transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), background 0.25s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .toggle-switch input:checked + .toggle-track .toggle-thumb {
+    transform: translateX(20px);
+    background: #fff;
+  }
+
+
+  .btn-gallery {
+    background: linear-gradient(135deg, #2d1b69, #6c63ff);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(108,99,255,0.22);
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-gallery:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108,99,255,0.38); }
 
   /* ── Preview ── */
   .preview-area {
