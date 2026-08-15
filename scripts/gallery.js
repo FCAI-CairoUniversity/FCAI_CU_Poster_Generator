@@ -11,7 +11,7 @@
  */
 
 // ── Config ──────────────────────────────────────────────────
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyEeiMHK8xU41gTMWyCVV_RkWGOJPKeVThSPBM6xjMisuBUZi8fh09IaZ4wYYHfx-GK/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9nrDQf3NFl6yWRScUnoIPfKANP_cEUEv0eUOLQbps2eTpYkeT65zIpOhyKK9iZNuc/exec";
 
 // ── State ────────────────────────────────────────────────────
 let rawPosters      = [];   // all posters from API (unfiltered)
@@ -91,9 +91,17 @@ function showError(msg) {
   totalCount.textContent   = "Error";
 }
 
+function isPosterDone(poster) {
+  if (!poster) return false;
+  return Boolean(
+    poster.okStatus === true ||
+    (poster.instagram && String(poster.instagram).trim() !== "" && String(poster.instagram).trim() !== "-")
+  );
+}
+
 // ── Update pending badge count ──────────────────────────────
 function updatePendingCount() {
-  const n = rawPosters.filter(p => !p.okStatus).length;
+  const n = rawPosters.filter(p => !isPosterDone(p)).length;
   if (pendingCount) pendingCount.textContent = n;
 }
 
@@ -118,7 +126,7 @@ function setView(view) {
 function applyView() {
   // Build viewPosters based on mode
   viewPosters = activeView === "pending"
-    ? rawPosters.filter(p => !p.okStatus)
+    ? rawPosters.filter(p => !isPosterDone(p))
     : rawPosters.slice();
 
   // Update header count
@@ -308,8 +316,10 @@ function buildCard(poster) {
       </div>`;
   }
 
+  const done = isPosterDone(poster);
+
   // Done badge (always shown for OK posters)
-  if (poster.okStatus) {
+  if (done) {
     const badge       = document.createElement("div");
     badge.className   = "g-done-badge";
     badge.textContent = "Done";
@@ -332,7 +342,7 @@ function buildCard(poster) {
   body.append(nameEl, deptEl);
 
   /* ── Non-OK: show warning + enabled button ── */
-  if (!poster.okStatus) {
+  if (!done) {
     const warn     = document.createElement("div");
     warn.className = "g-card-warning";
     warn.innerHTML =
@@ -487,7 +497,7 @@ function submitUsername() {
 
 function onSubmitSuccess() {
   // Mark poster as OK in rawPosters (real-time, no re-fetch needed)
-  const poster = rawPosters.find(p => p.id === activeStudentId);
+  const poster = rawPosters.find(p => String(p.id) === String(activeStudentId));
   if (poster) poster.okStatus = true;
 
   // Update pending count badge
