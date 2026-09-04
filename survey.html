@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graduation Survey — Senior 2027 · FCAI CU</title>
+  <link rel="shortcut icon" href="assets/icons/seniors.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="styles/survey.css" />
+</head>
+<body>
+
+<!-- ══ Modern Navigation Bar ════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-container">
+
+    <!-- Brand -->
+    <a href="index.html" class="nav-brand">
+      <div class="brand-icon">
+        <img src="assets/icons/seniors_light.png" alt="FCAI CU Senior '27" class="brand-img" />
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">FCAI CU</span>
+        <span class="brand-badge">Senior '27</span>
+      </div>
+    </a>
+
+    <!-- Hamburger Menu Button (Mobile) -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+
+    <!-- Navigation Items -->
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+        </svg>
+        <span>Poster Generator</span>
+      </a>
+
+      <a href="gallery.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>Class Gallery</span>
+      </a>
+
+      <a href="survey.html" class="nav-item nav-merch active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>Graduation Merch</span>
+        <span class="item-badge">New</span>
+      </a>
+    </nav>
+
+  </div>
+</header>
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<!-- ══ Page ══════════════════════════════════════════════════════ -->
+<main class="page">
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-badge">Graduation Survey &middot; Class of 2027</div>
+    <h1>What should we get<br>for graduation day?</h1>
+    <p>Help us plan by picking what you want and uploading your transfer receipt.<br>Prices shown are estimates — we'll confirm before any orders are placed.</p>
+  </header>
+
+  <!-- ════ Coming Soon Teaser View (Active on Production) ═══════════════ -->
+  <div id="comingSoonView" class="coming-soon-card" style="display: none;">
+    <div class="cs-icon-wrap">
+      <div class="cs-icon-glow"></div>
+      <svg class="cs-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+    </div>
+
+    <div class="cs-badge">✨ Exclusive Release</div>
+    <h2 class="cs-title">Graduation Merch is Coming Soon!</h2>
+    <p class="cs-desc">
+      We are preparing the official, limited-edition <strong>FCAI Cairo University Senior '27</strong> Graduation Merchandise collection.<br>
+      T-Shirts, Sunglasses, Wooden Sticks, Notebooks & Frames are being finalized.
+    </p>
+
+    <div class="cs-features">
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">👕</span>
+        <span class="cs-feat-text">Custom T-Shirts</span>
+      </div>
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">🕶️</span>
+        <span class="cs-feat-text">Sunglasses</span>
+      </div>
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">🪄</span>
+        <span class="cs-feat-text">Graduation Sticks</span>
+      </div>
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">📓</span>
+        <span class="cs-feat-text">Senior Notebooks</span>
+      </div>
+    </div>
+
+    <div class="cs-actions">
+      <a href="index.html" class="cs-btn cs-btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <path d="M3 9h18M9 21V9"></path>
+        </svg>
+        Generate Your Poster
+      </a>
+      <a href="gallery.html" class="cs-btn cs-btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+          <polyline points="21 15 16 10 5 21"></polyline>
+        </svg>
+        Explore Class Gallery
+      </a>
+    </div>
+
+    <div class="cs-footer-hint">
+      🔒 Orders will open soon for all Senior '27 students.
+    </div>
+  </div>
+
+  <!-- ════ Survey Form ════════════════════════════════════════════ -->
+  <form id="surveyForm" class="survey-form" novalidate>
+
+    <!-- ── Section 1 · Personal Information ───────────────────── -->
+    <section class="form-section" id="sec-personal">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="section-header-text">
+          <h2 class="section-title">Personal Information</h2>
+          <p class="section-desc">Required to register your order</p>
+        </div>
+        <span class="section-step">Step 1 of 5</span>
+      </div>
+
+      <div class="section-body">
+        <div class="fields-grid">
+          <div class="field span-2">
+            <label for="fullName">Full Name <span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName"
+                   placeholder="e.g. Ahmed Mohamed Ali"
+                   maxlength="80" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="studentId">Student ID <span class="req">*</span></label>
+            <input type="text" id="studentId" name="studentId"
+                   placeholder="e.g. 20230001"
+                   maxlength="20" autocomplete="off" required />
+          </div>
+          <div class="field">
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" name="phone"
+                   placeholder="e.g. 01xxxxxxxxx"
+                   maxlength="15" autocomplete="tel" required />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 2 · Graduation Items ───────────────────────── -->
+    <section class="form-section" id="sec-items">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <div class="section-header-text">
+          <h2 class="section-title">Graduation Items</h2>
+          <p class="section-desc">Select what you want &mdash; at least one item is required</p>
+        </div>
+        <span class="section-step">Step 2 of 5</span>
+      </div>
+
+      <div class="section-body">
+        <!-- Item cards rendered by survey.js -->
+        <div id="itemsContainer" class="items-list"></div>
+      </div>
+    </section>
+
+    <!-- ── Section 3 · Order Summary ──────────────────────────── -->
+    <section class="form-section" id="sec-summary">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"/>
+            <line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/>
+            <line x1="3" y1="6" x2="3.01" y2="6"/>
+            <line x1="3" y1="12" x2="3.01" y2="12"/>
+            <line x1="3" y1="18" x2="3.01" y2="18"/>
+          </svg>
+        </div>
+        <div class="section-header-text">
+          <h2 class="section-title">Order Summary</h2>
+          <p class="section-desc">Review your selection and estimated cost before payment</p>
+        </div>
+        <span class="section-step">Step 3 of 5</span>
+      </div>
+
+      <div class="section-body">
+        <!-- Summary rendered by survey.js -->
+        <div id="orderSummary"></div>
+      </div>
+    </section>
+
+    <!-- ── Section 4 · Payment Proof ──────────────────────────── -->
+    <section class="form-section" id="sec-payment">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+          </svg>
+        </div>
+        <div class="section-header-text">
+          <h2 class="section-title">Payment Transfer Receipt <span class="req" style="color:#ef4444">*</span></h2>
+          <p class="section-desc">Upload a screenshot of your transfer (Vodafone Cash, InstaPay, etc.)</p>
+        </div>
+        <span class="section-step">Step 4 of 5</span>
+      </div>
+
+      <div class="section-body">
+        <div class="file-upload-wrap" id="fwrap-payment_proof">
+          <label class="file-upload-zone" for="finput-payment_proof" id="fzone-payment_proof">
+            <div class="file-upload-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+            </div>
+            <span class="file-upload-title">Click to upload payment screenshot <span class="req">*</span></span>
+            <span class="file-upload-hint">Upload transfer confirmation / receipt &middot; Max 5MB &middot; JPG, PNG, WEBP</span>
+            <input type="file" id="finput-payment_proof" class="file-input-hidden"
+                   accept="image/*"
+                   data-sub="payment_proof"
+                   data-max="5"
+                   onchange="SurveyApp.handleFileSelect(this)" required />
+          </label>
+          <div class="file-preview-wrap" id="fpreview-payment_proof" style="display:none">
+            <img class="file-preview-img" id="fimg-payment_proof" src="" alt="Payment Receipt Preview">
+            <div class="file-preview-info">
+              <span class="file-preview-name" id="fname-payment_proof"></span>
+              <button type="button" class="file-remove-btn"
+                      onclick="SurveyApp.clearFile('payment_proof')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Section 5 · Suggestions ────────────────────────────── -->
+    <section class="form-section" id="sec-suggestions">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div class="section-header-text">
+          <h2 class="section-title">Suggestions</h2>
+          <p class="section-desc">Any other ideas or special requests? (optional)</p>
+        </div>
+        <span class="section-step">Step 5 of 5</span>
+      </div>
+
+      <div class="section-body">
+        <div class="field">
+          <textarea id="suggestions" name="suggestions" rows="4"
+                    placeholder="Share any graduation ideas, design feedback, or special requests here..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Submit ──────────────────────────────────────────────── -->
+    <div class="submit-area">
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        <span id="submitLabel">Save My Response</span>
+      </button>
+      <p class="privacy-note">
+        Your data is stored privately and shared only with the graduation planning team.
+      </p>
+    </div>
+
+  </form>
+</main><!-- /page -->
+
+<!-- ══ Success Overlay ═══════════════════════════════════════════ -->
+<div class="success-overlay" id="successOverlay" inert>
+  <div class="success-box">
+    <div class="success-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Response Saved!</h2>
+    <p>Thank you, <strong id="successName"></strong>!<br>Your selections and payment receipt have been recorded successfully.</p>
+    <div class="success-total-row">
+      <span>Estimated Total</span>
+      <strong id="successTotal">0 EGP</strong>
+    </div>
+    <button class="btn-dismiss" onclick="SurveyApp.closeSuccess()">Done</button>
+  </div>
+</div>
+
+<!-- ══ Toast Container ═══════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script src="scripts/navbar.js"></script>
+<script src="scripts/survey.js"></script>
+</body>
+</html>

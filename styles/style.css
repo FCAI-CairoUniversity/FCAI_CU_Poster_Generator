@@ -1,63 +1,8 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-/* ── Gallery Top Banner ─────────────────────────────────── */
-.gallery-top-banner {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 11px 20px;
-  background: linear-gradient(90deg, #0f0720 0%, #1a0a3a 25%, #0d1a40 50%, #1a0a3a 75%, #0f0720 100%);
-  background-size: 200% 100%;
-  animation: banner-shimmer 4s linear infinite;
-  border-bottom: 1px solid rgba(109,40,217,0.4);
-  box-shadow: 0 2px 20px rgba(109,40,217,0.25), 0 0 40px rgba(77,142,219,0.1);
-  flex-wrap: wrap;
-}
-@keyframes banner-shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-.gallery-banner-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #c4b5fd;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-.gallery-banner-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 18px;
-  background: linear-gradient(135deg, #6d28d9, #4d8edb);
-  color: #fff;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 8px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  box-shadow: 0 0 0 2px rgba(109,40,217,0.4), 0 4px 16px rgba(109,40,217,0.4);
-  animation: btn-glow 2s ease-in-out infinite;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.gallery-banner-btn:hover {
-  transform: translateY(-1px) scale(1.03);
-  box-shadow: 0 0 0 3px rgba(109,40,217,0.6), 0 6px 24px rgba(109,40,217,0.6);
-}
-@keyframes btn-glow {
-  0%, 100% { box-shadow: 0 0 0 2px rgba(109,40,217,0.4), 0 4px 16px rgba(109,40,217,0.35); }
-  50%       { box-shadow: 0 0 0 3px rgba(77,142,219,0.6), 0 4px 24px rgba(77,142,219,0.5); }
-}
-@media (max-width: 500px) {
-  .gallery-banner-text { font-size: 11px; }
-  .gallery-banner-btn  { font-size: 12px; padding: 6px 14px; }
-}
+/* ══════════════════════════════════════════════════════════════
+   style.css — Poster Generator Page Styles
+   FCAI CU Senior 2027
+   ══════════════════════════════════════════════════════════════ */
+@import 'common.css';
 
 
 body {

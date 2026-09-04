@@ -10,22 +10,57 @@
 </head>
 <body class="gallery-body">
 
-<!-- ══ Header ══════════════════════════════════════════════ -->
-<header class="g-header">
-  <div class="g-header-inner">
-    <a href="index.html" class="g-back-btn" title="Back to Generator">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
+<!-- ══ Modern Navigation Bar ════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-container">
+
+    <!-- Brand -->
+    <a href="index.html" class="nav-brand">
+      <div class="brand-icon">
+        <img src="assets/icons/seniors_light.png" alt="FCAI CU Senior '27" class="brand-img" />
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">FCAI CU</span>
+        <span class="brand-badge">Senior '27</span>
+      </div>
     </a>
-    <div class="g-logo">
-      <span class="g-logo-icon">🎓</span>
-      <span>Senior 2027 Gallery · FCAI CU</span>
-    </div>
-    <div class="g-count-badge" id="totalCount">Loading…</div>
+
+    <!-- Hamburger Menu Button (Mobile) -->
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+
+    <!-- Navigation Items -->
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+        </svg>
+        <span>Poster Generator</span>
+      </a>
+
+      <a href="gallery.html" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span>Class Gallery</span>
+        <span class="g-count-badge" id="totalCount" style="margin-left:4px;">...</span>
+      </a>
+
+      <a href="survey.html" class="nav-item nav-merch">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>Graduation Merch</span>
+        <span class="item-badge">New</span>
+      </a>
+    </nav>
+
   </div>
 </header>
+<div class="nav-backdrop" id="navBackdrop"></div>
 
 <!-- ══ View Toggle ════════════════════════════════════════ -->
 <div class="g-toggle-wrap">
@@ -151,6 +186,7 @@
 <!-- ══ Toast ═══════════════════════════════════════════════ -->
 <div class="toast-container" id="toastContainer"></div>
 
+<script src="scripts/navbar.js"></script>
 <script src="scripts/gallery.js"></script>
 </body>
 </html>
