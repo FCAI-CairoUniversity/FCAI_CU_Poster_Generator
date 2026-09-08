@@ -12,7 +12,7 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxxnU07LjzPfeFEsrXzzXDX_IrP4g0q1mDJhGizz9H7nkFesJktSGC1oyb6vnVBhx5/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxoQ5rfAoH5SFMPbbR2gloI4jbl64YVBVIOgVY_LI28D2Eltdp6wKMx2Jr_g4IdiBNw/exec";
 
 /**
  * Graduation items catalogue.
@@ -53,7 +53,26 @@ const ITEMS = [
     description: 'Sunglasses printed with "Senior" and the graduation year — perfect for group shots.',
     price: 80,
     icon: "glasses",
-    suboptions: [],
+    suboptions: [
+      {
+        id       : "sunglasses_design",
+        label    : "Choose Your Design",
+        required : true,
+        type     : "image-choices",
+        options  : [
+          {
+            value : "design_1",
+            label : "Design 1",
+            image : "https://lh3.googleusercontent.com/d/1nHbx7lqbgOthRRSt5uZUWZ9E92VfEE7m",
+          },
+          {
+            value : "design_2",
+            label : "Design 2",
+            image : "https://lh3.googleusercontent.com/d/1K3E5-dBGdArKc-VvXqPwOPA-7Mooo7r2",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "sticks",
@@ -63,9 +82,27 @@ const ITEMS = [
     icon: "star",
     suboptions: [
       {
+        id       : "sticks_design",
+        label    : "Choose Your Design",
+        required : true,
+        type     : "image-choices",
+        options  : [
+          {
+            value : "design_1",
+            label : "Design 1",
+            image : "https://lh3.googleusercontent.com/d/1fsVtvl2CrMXMKcw-APgGfsxvEEpytkCg",
+          },
+          {
+            value : "design_2",
+            label : "Design 2",
+            image : "https://lh3.googleusercontent.com/d/1V9vys8GgvxoFO3D3Dz7diek5qCmLFwKE",
+          },
+        ],
+      },
+      {
         id       : "sticks_photo",
-        label    : "Design Reference Photo",
-        hint     : "Upload a photo of the design you want printed on the sticks",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the stick design",
         required : true,
         type     : "file",
         accept   : "image/*",
@@ -81,8 +118,15 @@ const ITEMS = [
     icon: "book",
     suboptions: [
       {
+        id      : "notebook_preview",
+        label   : "Notebook Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1NAIiJ8gAgEWHJx8sRopOwGzLPuT0EfF8",
+        caption : "Senior '27 Memory Notebook — official design",
+      },
+      {
         id: "notebook_cover",
-        label: "Cover Design",
+        label: "Cover Colour",
         required: false,
         type: "design-cards",
         options: [
@@ -90,6 +134,15 @@ const ITEMS = [
           { value: "modern",  label: "Modern",   color: "#1a1a2e" },
           { value: "vintage", label: "Vintage",  color: "#8b5e3c" },
         ],
+      },
+      {
+        id       : "notebook_photo",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the notebook",
+        required : true,
+        type     : "file",
+        accept   : "image/*",
+        maxSizeMB: 4,
       },
     ],
   },
@@ -101,8 +154,15 @@ const ITEMS = [
     icon: "frame",
     suboptions: [
       {
+        id      : "frame_preview",
+        label   : "Frame Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1Ihicxifrg5yiwq9ztG_BTnYpjahwGV3P",
+        caption : "Senior '27 Certificate Frame — official design",
+      },
+      {
         id: "frame_design",
-        label: "Frame Design",
+        label: "Frame Colour",
         required: false,
         type: "design-cards",
         options: [
@@ -114,8 +174,8 @@ const ITEMS = [
       },
       {
         id       : "frame_photo",
-        label    : "Design Reference Photo",
-        hint     : "Upload a photo of the frame design you prefer",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the frame",
         required : true,
         type     : "file",
         accept   : "image/*",
@@ -269,6 +329,33 @@ function renderSuboption(itemId, sub) {
     </div>`;
   }
 
+  if (sub.type === "image-choices") {
+    return `<div class="image-choices-row" id="row-${sub.id}">
+      ${sub.options.map(opt => `
+        <button type="button" class="image-choice-card"
+                data-item="${itemId}" data-sub="${sub.id}" data-value="${opt.value}"
+                onclick="SurveyApp.selectSub('${itemId}', '${sub.id}', '${opt.value}', this)">
+          <div class="image-choice-img-wrap">
+            <img src="${opt.image}" alt="${opt.label}" class="image-choice-img"
+                 onload="SurveyApp.fitImgWrap(this)"
+                 onerror="SurveyApp.imgLoadError(this)" />
+            <span class="image-choice-check">${svg("check")}</span>
+          </div>
+          <span class="image-choice-label">${opt.label}</span>
+        </button>
+      `).join("")}
+    </div>`;
+  }
+
+  if (sub.type === "image-preview") {
+    return `<div class="image-preview-block">
+      <img src="${sub.image}" alt="${sub.caption || sub.label}" class="image-preview-img"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+      <span class="image-preview-error" style="display:none">Image unavailable</span>
+      ${sub.caption ? `<p class="image-preview-caption">${sub.caption}</p>` : ""}
+    </div>`;
+  }
+
   if (sub.type === "file") {
     return `
     <div class="file-upload-wrap" id="fwrap-${sub.id}">
@@ -369,11 +456,11 @@ function renderSummary() {
     const item = ITEMS.find(i => i.id === id);
     if (!item) return "";
 
-    // Collect sub-detail text
+    // Collect sub-detail text (skip image-preview — no user choice needed)
     const details = item.suboptions
-      .filter(sub => state.suboptions[sub.id])
+      .filter(sub => sub.type !== "image-preview" && sub.type !== "file" && state.suboptions[sub.id])
       .map(sub => {
-        const opt = sub.options.find(o => o.value === state.suboptions[sub.id]);
+        const opt = sub.options && sub.options.find(o => o.value === state.suboptions[sub.id]);
         return `${sub.label}: ${opt ? opt.label : state.suboptions[sub.id]}`;
       });
 
@@ -480,13 +567,14 @@ function getMissingRequiredSubs() {
     if (!item) continue;
     for (const sub of item.suboptions) {
       if (!sub.required) continue;
+      if (sub.type === "image-preview") continue; // display-only, no user choice
       if (sub.type === "file") {
         // Check if a file has been uploaded for this sub
         if (!state.fileData[sub.id]) {
           missing.push({ itemName: item.name, label: `${item.name} — ${sub.label}` });
         }
       } else {
-        // Check if a selection has been made
+        // pills / design-cards / image-choices — check selection
         if (!state.suboptions[sub.id]) {
           missing.push({ itemName: item.name, label: `${item.name} — ${sub.label}` });
         }
@@ -546,30 +634,33 @@ async function handleSubmit(e) {
   const itemsSummary = [...state.selected].map(id => {
     const item = ITEMS.find(i => i.id === id);
     const subs = item.suboptions
-      .filter(s => state.suboptions[s.id])
+      .filter(s => s.type !== "image-preview" && s.type !== "file" && state.suboptions[s.id])
       .map(s => {
-        const opt = s.options.find(o => o.value === state.suboptions[s.id]);
+        const opt = s.options && s.options.find(o => o.value === state.suboptions[s.id]);
         return `${s.label}: ${opt ? opt.label : state.suboptions[s.id]}`;
       });
     return subs.length ? `${item.name} (${subs.join(", ")})` : item.name;
   }).join(" | ");
 
   const payload = {
-    timestamp        : new Date().toLocaleString("en-EG", { timeZone: "Africa/Cairo" }),
-    fullName         : document.getElementById("fullName").value.trim(),
-    studentId        : document.getElementById("studentId").value.trim(),
-    phone            : document.getElementById("phone").value.trim(),
-    selectedItems    : [...state.selected].map(id => ITEMS.find(i => i.id === id)?.name).join(", "),
-    itemsWithDetails : itemsSummary,
-    tshirtSize       : state.suboptions["tshirt_size"]    || "—",
-    notebookCover    : state.suboptions["notebook_cover"] || "—",
-    frameDesign      : state.suboptions["frame_design"]   || "—",
-    totalAmount      : state.total,
-    suggestions      : document.getElementById("suggestions").value.trim() || "—",
+    timestamp          : new Date().toLocaleString("en-EG", { timeZone: "Africa/Cairo" }),
+    fullName           : document.getElementById("fullName").value.trim(),
+    studentId          : document.getElementById("studentId").value.trim(),
+    phone              : document.getElementById("phone").value.trim(),
+    selectedItems      : [...state.selected].map(id => ITEMS.find(i => i.id === id)?.name).join(", "),
+    itemsWithDetails   : itemsSummary,
+    tshirtSize         : state.suboptions["tshirt_size"]       || "—",
+    sunglassesDesign   : state.suboptions["sunglasses_design"] || "—",
+    sticksDesign       : state.suboptions["sticks_design"]     || "—",
+    notebookCover      : state.suboptions["notebook_cover"]    || "—",
+    frameDesign        : state.suboptions["frame_design"]      || "—",
+    totalAmount        : state.total,
+    suggestions        : document.getElementById("suggestions").value.trim() || "—",
     // Image uploads (base64) — uploaded to Google Drive by the Apps Script
-    paymentProof     : state.fileData["payment_proof"] || null,
-    sticksPhoto      : state.fileData["sticks_photo"]  || null,
-    framePhoto       : state.fileData["frame_photo"]   || null,
+    paymentProof       : state.fileData["payment_proof"]  || null,
+    sticksPhoto        : state.fileData["sticks_photo"]   || null,
+    notebookPhoto      : state.fileData["notebook_photo"] || null,
+    framePhoto         : state.fileData["frame_photo"]    || null,
   };
 
 
@@ -721,6 +812,42 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", handleSubmit);
 });
 
+
+// ══════════════════════════════════════════════════════════════════
+//  🖼  IMAGE SIZE HELPERS
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * Called onload for image-choice images.
+ * Sets the wrap's aspect-ratio to match the real image dimensions
+ * so the box fits the image perfectly instead of forcing a 1:1 square.
+ */
+function fitImgWrap(imgEl) {
+  const wrap = imgEl.parentElement;
+  if (!wrap) return;
+  const w = imgEl.naturalWidth;
+  const h = imgEl.naturalHeight;
+  if (w && h) {
+    wrap.style.aspectRatio = `${w} / ${h}`;
+    wrap.classList.add("ratio-loaded");
+  }
+}
+
+/**
+ * Called onerror for image-choice images.
+ * Replaces the broken image area with a friendly placeholder.
+ */
+function imgLoadError(imgEl) {
+  const wrap = imgEl.parentElement;
+  if (!wrap) return;
+  // Keep the checkmark span but swap image for error message
+  const check = wrap.querySelector(".image-choice-check");
+  wrap.innerHTML = `<span class="img-error">⚠ Image unavailable</span>`;
+  if (check) wrap.appendChild(check);
+  wrap.style.aspectRatio = "4 / 3";   // reasonable fallback ratio
+  wrap.classList.add("ratio-loaded");
+}
+
 // Expose public API for inline onclick handlers in rendered HTML
-const SurveyApp = { toggleItem, selectSub, closeSuccess, handleFileSelect, clearFile, checkEnvironment };
+const SurveyApp = { toggleItem, selectSub, closeSuccess, handleFileSelect, clearFile, checkEnvironment, fitImgWrap, imgLoadError };
 

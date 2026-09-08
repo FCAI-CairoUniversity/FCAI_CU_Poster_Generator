@@ -512,7 +512,7 @@
 }
 
 .item-suboptions.open {
-  max-height: 600px;
+  max-height: 900px;
   padding: 18px;
 }
 
@@ -744,6 +744,156 @@
 }
 
 .file-remove-btn svg { width: 13px; height: 13px; }
+
+/* ══ Image Choices (pick one from image cards) ══════════════════ */
+.image-choices-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.image-choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #0d1a30;
+  border: 2px solid #1a2f50;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  font-family: inherit;
+  min-width: 130px;
+  flex: 1;
+  max-width: 200px;
+}
+
+.image-choice-card:hover {
+  border-color: #4d8edb;
+  background: rgba(77, 142, 219, 0.07);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.image-choice-card.active {
+  border-color: #4d8edb;
+  background: rgba(77, 142, 219, 0.14);
+  box-shadow: 0 0 0 1px #4d8edb, 0 6px 22px rgba(77, 142, 219, 0.25);
+}
+
+.image-choice-img-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #080e1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* aspect-ratio set dynamically by JS after image loads */
+  aspect-ratio: 1 / 1;
+  transition: aspect-ratio 0.2s ease;
+}
+
+.image-choice-img-wrap.ratio-loaded {
+  aspect-ratio: unset;
+}
+
+.image-choice-img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  transition: transform 0.22s ease;
+  object-fit: contain;
+}
+
+.image-choice-card:hover .image-choice-img {
+  transform: scale(1.04);
+}
+
+/* Checkmark overlay shown on active card */
+.image-choice-check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #4d8edb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: scale(0.7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.image-choice-card.active .image-choice-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.image-choice-check svg {
+  width: 14px;
+  height: 14px;
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.image-choice-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: color 0.2s;
+}
+
+.image-choice-card.active .image-choice-label {
+  color: #e8eaf0;
+}
+
+.img-error {
+  font-size: 11px;
+  color: #ef4444;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ══ Image Preview (display-only, single design) ════════════════ */
+.image-preview-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.image-preview-img {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid #1a2f50;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  display: block;
+  object-fit: contain;
+  background: #080e1c;
+}
+
+.image-preview-caption {
+  font-size: 11px;
+  color: #5a7aaa;
+  font-style: italic;
+  margin: 0;
+}
+
+.image-preview-error {
+  font-size: 12px;
+  color: #ef4444;
+}
 
 /* ══ Order Summary ══════════════════════════════════════════════ */
 .summary-empty {
