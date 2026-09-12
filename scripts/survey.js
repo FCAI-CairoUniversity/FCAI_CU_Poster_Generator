@@ -12,7 +12,7 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxoQ5rfAoH5SFMPbbR2gloI4jbl64YVBVIOgVY_LI28D2Eltdp6wKMx2Jr_g4IdiBNw/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJUKaBpg_hRBvWQe4J8IqkthzvaYHY5JxSTlSsJupY3jL1EpG-s0CL2Xb9xmfeuFaa/exec";
 
 /**
  * Graduation items catalogue.
@@ -24,28 +24,13 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxoQ5rfAoH5SFMP
  */
 const ITEMS = [
   {
-    id: "tshirt",
-    name: "Senior T-Shirt",
-    description: "Custom graduation tee with the batch design and graduation year printed on it.",
-    price: 150,
-    icon: "shirt",
-    suboptions: [
-      {
-        id: "tshirt_size",
-        label: "T-Shirt Size",
-        required: true,
-        type: "pills",
-        options: [
-          { value: "XS",   label: "XS"   },
-          { value: "S",    label: "S"    },
-          { value: "M",    label: "M"    },
-          { value: "L",    label: "L"    },
-          { value: "XL",   label: "XL"   },
-          { value: "XXL",  label: "XXL"  },
-          { value: "XXXL", label: "XXXL" },
-        ],
-      },
-    ],
+    id       : "hoodie",
+    name     : "Senior Hoodie",
+    description: "Premium graduation hoodie with the batch design — stay cozy on graduation day.",
+    price    : 600,
+    icon     : "shirt",
+    disabled : true,            // ← coming soon / not available yet
+    suboptions: [],
   },
   {
     id: "sunglasses",
@@ -78,7 +63,7 @@ const ITEMS = [
     id: "sticks",
     name: "Photo Sticks",
     description: "Decorative wooden prop sticks for graduation photoshoots and group photos.",
-    price: 50,
+    price: 25,
     icon: "star",
     suboptions: [
       {
@@ -111,34 +96,16 @@ const ITEMS = [
     ],
   },
   {
-    id: "notebook",
-    name: "Memory Notebook",
-    description: "A hardcover notebook to collect messages from family and friends, handprints, and university memories.",
-    price: 120,
-    icon: "book",
+    id: "medal",
+    name: "Acrylic Medal / Pin",
+    description: "Personalised acrylic medal or pin badge with the graduation batch logo.",
+    price: 80,
+    icon: "star",
     suboptions: [
       {
-        id      : "notebook_preview",
-        label   : "Notebook Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1NAIiJ8gAgEWHJx8sRopOwGzLPuT0EfF8",
-        caption : "Senior '27 Memory Notebook — official design",
-      },
-      {
-        id: "notebook_cover",
-        label: "Cover Colour",
-        required: false,
-        type: "design-cards",
-        options: [
-          { value: "classic", label: "Classic",  color: "#3b5ea6" },
-          { value: "modern",  label: "Modern",   color: "#1a1a2e" },
-          { value: "vintage", label: "Vintage",  color: "#8b5e3c" },
-        ],
-      },
-      {
-        id       : "notebook_photo",
+        id       : "medal_photo",
         label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the notebook",
+        hint     : "Upload your reference photo for the medal / pin",
         required : true,
         type     : "file",
         accept   : "image/*",
@@ -150,7 +117,7 @@ const ITEMS = [
     id: "frame",
     name: "Certificate Frame",
     description: "Commemorative diploma frame featuring the graduate's name, faculty, and graduation year.",
-    price: 200,
+    price: 160,
     icon: "frame",
     suboptions: [
       {
@@ -253,12 +220,13 @@ function renderItems() {
   if (!container) return;
 
   container.innerHTML = ITEMS.map(item => `
-    <div class="item-card" id="card-${item.id}">
+    <div class="item-card${item.disabled ? " disabled" : ""}" id="card-${item.id}">
 
       <!-- Toggle row -->
       <button type="button" class="item-toggle"
-              onclick="SurveyApp.toggleItem('${item.id}')"
-              aria-pressed="false" id="toggle-${item.id}">
+              ${item.disabled ? `onclick="return false;" aria-disabled="true"` : `onclick="SurveyApp.toggleItem('${item.id}')"`}
+              aria-pressed="false" id="toggle-${item.id}"
+              ${item.disabled ? `tabindex="-1"` : ""}>
 
         <!-- Checkbox indicator -->
         <span class="item-checkbox" id="chk-${item.id}">
@@ -276,8 +244,11 @@ function renderItems() {
 
         <!-- Price -->
         <span class="item-price-tag">
-          <span class="item-price-amount">${item.price}</span>
-          <span class="item-price-unit">EGP / person</span>
+          ${item.disabled
+            ? `<span class="item-coming-soon-badge">Coming Soon</span>`
+            : `<span class="item-price-amount">${item.price}</span>
+               <span class="item-price-unit">EGP / person</span>`
+          }
         </span>
 
       </button>
@@ -511,7 +482,11 @@ function renderSummary() {
 
 /** Toggle an item card on/off. */
 function toggleItem(itemId) {
+  const item    = ITEMS.find(i => i.id === itemId);
+  if (!item || item.disabled) return;   // ← disabled items are not selectable
+
   const card    = document.getElementById(`card-${itemId}`);
+
   const subPanel = document.getElementById(`sub-${itemId}`);
   const toggle  = document.getElementById(`toggle-${itemId}`);
 
@@ -523,7 +498,6 @@ function toggleItem(itemId) {
     if (subPanel) subPanel.classList.remove("open");
 
     // Clear sub-option selections for this item
-    const item = ITEMS.find(i => i.id === itemId);
     if (item) item.suboptions.forEach(sub => {
       delete state.suboptions[sub.id];
       // Deactivate all buttons in this sub group
@@ -649,17 +623,15 @@ async function handleSubmit(e) {
     phone              : document.getElementById("phone").value.trim(),
     selectedItems      : [...state.selected].map(id => ITEMS.find(i => i.id === id)?.name).join(", "),
     itemsWithDetails   : itemsSummary,
-    tshirtSize         : state.suboptions["tshirt_size"]       || "—",
     sunglassesDesign   : state.suboptions["sunglasses_design"] || "—",
     sticksDesign       : state.suboptions["sticks_design"]     || "—",
-    notebookCover      : state.suboptions["notebook_cover"]    || "—",
     frameDesign        : state.suboptions["frame_design"]      || "—",
     totalAmount        : state.total,
     suggestions        : document.getElementById("suggestions").value.trim() || "—",
     // Image uploads (base64) — uploaded to Google Drive by the Apps Script
     paymentProof       : state.fileData["payment_proof"]  || null,
     sticksPhoto        : state.fileData["sticks_photo"]   || null,
-    notebookPhoto      : state.fileData["notebook_photo"] || null,
+    medalPhoto         : state.fileData["medal_photo"]    || null,
     framePhoto         : state.fileData["frame_photo"]    || null,
   };
 

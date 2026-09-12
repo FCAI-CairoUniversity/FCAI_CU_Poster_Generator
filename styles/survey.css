@@ -388,6 +388,36 @@
   background: #0d1a30;
 }
 
+/* ── Disabled / Coming Soon item card ────────────────────────────── */
+.item-card.disabled {
+  opacity: 0.55;
+  border-color: #1a2540;
+  filter: grayscale(0.4);
+}
+
+.item-card.disabled:hover {
+  border-color: #1a2540;   /* suppress hover highlight */
+}
+
+.item-card.disabled .item-toggle {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.item-coming-soon-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  white-space: nowrap;
+}
+
 /* Toggle row (clickable) */
 .item-toggle {
   width: 100%;
