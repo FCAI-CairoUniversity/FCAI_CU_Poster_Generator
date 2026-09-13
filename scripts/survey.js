@@ -12,7 +12,7 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVaxotEfrqUqMkmReUhnqGM5mUjzQ_6tuU_bjHpgDrpqMNdjKAmtFYGaIG058qhGQ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9Yhjr7U5gWEKgQhuAWTezLDMlyXuVh40oFgZu81r2q6zpRn8S_ajxYglbHQk3okys/exec";
 
 /**
  * Departments shown in the "Department" dropdown.
@@ -58,13 +58,13 @@ const ITEMS = [
         type     : "image-choices",
         options  : [
           {
-            value : "design_1",
-            label : "Design 1",
+            value : "white",
+            label : "White",
             image : "https://lh3.googleusercontent.com/d/1nHbx7lqbgOthRRSt5uZUWZ9E92VfEE7m",
           },
           {
-            value : "design_2",
-            label : "Design 2",
+            value : "black",
+            label : "Black",
             image : "https://lh3.googleusercontent.com/d/1K3E5-dBGdArKc-VvXqPwOPA-7Mooo7r2",
           },
         ],
@@ -79,22 +79,11 @@ const ITEMS = [
     icon: "star",
     suboptions: [
       {
-        id       : "sticks_design",
-        label    : "Choose Your Design",
-        required : true,
-        type     : "image-choices",
-        options  : [
-          {
-            value : "girls",
-            label : "Girls Design 👧",
-            image : "https://lh3.googleusercontent.com/d/1jzhkef0WBTflRDOi5oD8RmWMUB4cXRML",
-          },
-          {
-            value : "boys",
-            label : "Boys Design 👦",
-            image : "https://lh3.googleusercontent.com/d/11c4RR-ACgaqfsQV8oHYlXZuuwN62fyUd",
-          },
-        ],
+        id      : "sticks_preview",
+        label   : "Sticks Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1BvY1_Rytt5Hcq2MdYbLOa-DNuLBWbN7z",
+        caption : "Senior '27 Sticks — official design",
       },
       {
         id       : "sticks_photo",
@@ -108,23 +97,48 @@ const ITEMS = [
     ],
   },
   {
-    id: "medal",
-    name: "Acrylic Medal / Pin",
-    description: "Personalised acrylic medal or pin badge with the graduation batch logo.",
+    id: "keychain",
+    name: "Acrylic Keychain",
+    description: "Personalised acrylic keychain badge with the graduation batch logo.",
     price: 80,
     icon: "star",
     suboptions: [
       {
-        id      : "medal_preview",
-        label   : "Medal Design",
+        id      : "keychain_preview",
+        label   : "Keychain Design",
         type    : "image-preview",
         image   : "https://lh3.googleusercontent.com/d/1RiRwi3VbPIQ5ctRbaIVH-WTMcT-Q36yN",
-        caption : "Senior '27 Acrylic Medal — official design",
+        caption : "Senior '27 Acrylic Keychain — official design",
       },
       {
-        id       : "medal_photo",
+        id       : "keychain_photo",
         label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the medal / pin",
+        hint     : "Upload your reference photo for the keychain",
+        required : true,
+        type     : "file",
+        accept   : "image/*",
+        maxSizeMB: 4,
+      },
+    ],
+  },
+  {
+    id: "pin",
+    name: "Acrylic Pin",
+    description: "Personalised acrylic pin badge with the graduation batch logo.",
+    price: 80,
+    icon: "star",
+    suboptions: [
+      {
+        id      : "pin_preview",
+        label   : "pin Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1_JBGnwnYajlQY36fq2eTOnXwX0tK-ajz",
+        caption : "Senior '27 Acrylic Pin — official design",
+      },
+      {
+        id       : "pin_photo",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the pin",
         required : true,
         type     : "file",
         accept   : "image/*",
@@ -136,7 +150,7 @@ const ITEMS = [
     id: "frame",
     name: "Certificate Frame",
     description: "Commemorative diploma frame featuring the graduate's name, faculty, and graduation year.",
-    price: 160,
+    price: 140,
     icon: "frame",
     suboptions: [
       {
@@ -161,7 +175,7 @@ const ITEMS = [
     id: "notebook",
     name: "Senior Notebook",
     description: "A personalised graduation notebook with your name and the senior batch design.",
-    price: 160,
+    price: 170,
     icon: "book",
     suboptions: [
       {
@@ -333,7 +347,7 @@ function renderItems() {
             <span class="suboption-label">
               ${sub.label}
               <span class="suboption-badge ${sub.required ? "required" : "optional"}">
-                ${sub.required ? "Required" : "Optional"}
+                ${sub.required ? "Required" : ""}
               </span>
             </span>
             ${renderSuboption(item.id, sub)}
@@ -706,7 +720,8 @@ async function handleSubmit(e) {
     // Image uploads (base64) — uploaded to Google Drive by the Apps Script
     paymentProof       : state.fileData["payment_proof"]   || null,
     sticksPhoto        : state.fileData["sticks_photo"]    || null,
-    medalPhoto         : state.fileData["medal_photo"]     || null,
+    keychainPhoto      : state.fileData["keychain_photo"]     || null,
+    pinPhoto           : state.fileData["pin_photo"]     || null,
     framePhoto         : state.fileData["frame_photo"]     || null,
     notebookPhoto      : state.fileData["notebook_photo"]  || null,
     newspaperPhoto     : state.fileData["newspaper_photo"] || null,
