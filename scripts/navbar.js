@@ -60,17 +60,10 @@
       }
     });
 
-    // Environment-based Merch Badge (Soon on Production, New on Local/Preview)
-    const isLocal =
-      window.location.protocol === 'file:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1';
-    const isPreview = new URLSearchParams(window.location.search).get('preview') === 'merch' ||
-                      new URLSearchParams(window.location.search).get('admin') === '1';
-
+    // Merch Badge
     const merchBadges = document.querySelectorAll('.nav-merch .item-badge');
     merchBadges.forEach(function(badge) {
-      badge.textContent = (isLocal || isPreview) ? 'New' : 'Soon';
+      badge.textContent = 'New';
     });
 
     window.addEventListener('resize', function() {
