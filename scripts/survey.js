@@ -12,7 +12,19 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJUKaBpg_hRBvWQe4J8IqkthzvaYHY5JxSTlSsJupY3jL1EpG-s0CL2Xb9xmfeuFaa/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVaxotEfrqUqMkmReUhnqGM5mUjzQ_6tuU_bjHpgDrpqMNdjKAmtFYGaIG058qhGQ/exec";
+
+/**
+ * Departments shown in the "Department" dropdown.
+ * Edit this list any time — the dropdown rebuilds itself from it.
+ */
+const DEPARTMENTS = [
+  "Computer Science",
+  "Information Systems",
+  "Information Technology",
+  "Artificial Intelligence",
+  "Decision Support and operations research",
+];
 
 /**
  * Graduation items catalogue.
@@ -73,14 +85,14 @@ const ITEMS = [
         type     : "image-choices",
         options  : [
           {
-            value : "design_1",
-            label : "Design 1",
-            image : "https://lh3.googleusercontent.com/d/1fsVtvl2CrMXMKcw-APgGfsxvEEpytkCg",
+            value : "girls",
+            label : "Girls Design 👧",
+            image : "https://lh3.googleusercontent.com/d/1jzhkef0WBTflRDOi5oD8RmWMUB4cXRML",
           },
           {
-            value : "design_2",
-            label : "Design 2",
-            image : "https://lh3.googleusercontent.com/d/1V9vys8GgvxoFO3D3Dz7diek5qCmLFwKE",
+            value : "boys",
+            label : "Boys Design 👦",
+            image : "https://lh3.googleusercontent.com/d/11c4RR-ACgaqfsQV8oHYlXZuuwN62fyUd",
           },
         ],
       },
@@ -102,6 +114,13 @@ const ITEMS = [
     price: 80,
     icon: "star",
     suboptions: [
+      {
+        id      : "medal_preview",
+        label   : "Medal Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1RiRwi3VbPIQ5ctRbaIVH-WTMcT-Q36yN",
+        caption : "Senior '27 Acrylic Medal — official design",
+      },
       {
         id       : "medal_photo",
         label    : "Your Reference Photo",
@@ -128,21 +147,52 @@ const ITEMS = [
         caption : "Senior '27 Certificate Frame — official design",
       },
       {
-        id: "frame_design",
-        label: "Frame Colour",
-        required: false,
-        type: "design-cards",
-        options: [
-          { value: "classic_gold",  label: "Classic Gold",  color: "#c9a84c" },
-          { value: "modern_black",  label: "Modern Black",  color: "#2a2a2a" },
-          { value: "navy_blue",     label: "Navy Blue",     color: "#1a3c6e" },
-          { value: "rose_gold",     label: "Rose Gold",     color: "#b76e79" },
-        ],
-      },
-      {
         id       : "frame_photo",
         label    : "Your Reference Photo",
         hint     : "Upload your reference photo for the frame",
+        required : true,
+        type     : "file",
+        accept   : "image/*",
+        maxSizeMB: 4,
+      },
+    ],
+  },
+  {
+    id: "notebook",
+    name: "Senior Notebook",
+    description: "A personalised graduation notebook with your name and the senior batch design.",
+    price: 160,
+    icon: "book",
+    suboptions: [
+      {
+        id       : "notebook_photo",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the notebook cover",
+        required : true,
+        type     : "file",
+        accept   : "image/*",
+        maxSizeMB: 4,
+      },
+    ],
+  },
+  {
+    id: "newspaper",
+    name: "Senior Newspaper",
+    description: "A commemorative graduation newspaper featuring the senior batch.",
+    price: 70,
+    icon: "newspaper",
+    suboptions: [
+      {
+        id      : "newspaper_preview",
+        label   : "Newspaper Design",
+        type    : "image-preview",
+        image   : "https://lh3.googleusercontent.com/d/1FSlGL7bgYLgvxzMnr3vFN3evX57WwYWG",
+        caption : "Senior '27 Newspaper — official design",
+      },
+      {
+        id       : "newspaper_photo",
+        label    : "Your Reference Photo",
+        hint     : "Upload your reference photo for the newspaper",
         required : true,
         type     : "file",
         accept   : "image/*",
@@ -168,6 +218,8 @@ const ICON_PATHS = {
   book: `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>`,
 
   frame: `<rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1"/>`,
+
+  newspaper: `<rect x="3" y="4" width="18" height="16" rx="1"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="11" x2="17" y2="11"/><line x1="7" y1="14" x2="13" y2="14"/>`,
 
   check: `<polyline points="20 6 9 17 4 12"/>`,
 
@@ -199,7 +251,7 @@ const state = {
   /** Set of selected item IDs */
   selected: new Set(),
 
-  /** Sub-option selections: { "tshirt_size": "M", "frame_design": "navy_blue", ... } */
+  /** Sub-option selections: { "hoddie_size": "M", "notebook_cover": "classic", ... } */
   suboptions: {},
 
   /** File uploads: { "sticks_photo": { base64, mimeType, name }, ... } */
@@ -208,6 +260,26 @@ const state = {
   /** Running total (EGP) */
   total: 0,
 };
+
+
+// ══════════════════════════════════════════════════════════════════
+//  🎓  DEPARTMENT DROPDOWN
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * Fills the #department <select> with options built from the
+ * DEPARTMENTS list above. Expects the HTML to already contain:
+ *   <select id="department" required></select>
+ * placed near Full Name / Student ID / Phone in the form.
+ */
+function populateDepartments() {
+  const select = document.getElementById("department");
+  if (!select) return;
+
+  select.innerHTML =
+    `<option value="" disabled selected>Select your department</option>` +
+    DEPARTMENTS.map(d => `<option value="${d}">${d}</option>`).join("");
+}
 
 
 // ══════════════════════════════════════════════════════════════════
@@ -566,9 +638,10 @@ function getMissingRequiredSubs() {
 function validate() {
   const v = f => document.getElementById(f)?.value.trim();
 
-  if (!v("fullName"))  { showToast("Full name is required.", "error"); return false; }
-  if (!v("studentId")) { showToast("Student ID is required.", "error"); return false; }
-  if (!v("phone"))     { showToast("Phone number is required.", "error"); return false; }
+  if (!v("fullName"))   { showToast("Full name is required.", "error"); return false; }
+  if (!v("studentId"))  { showToast("Student ID is required.", "error"); return false; }
+  if (!v("phone"))      { showToast("Phone number is required.", "error"); return false; }
+  if (!v("department")) { showToast("Please select your department.", "error"); return false; }
 
   if (state.selected.size === 0) {
     showToast("Please select at least one graduation item.", "warn"); return false;
@@ -621,18 +694,22 @@ async function handleSubmit(e) {
     fullName           : document.getElementById("fullName").value.trim(),
     studentId          : document.getElementById("studentId").value.trim(),
     phone              : document.getElementById("phone").value.trim(),
+    department         : document.getElementById("department").value.trim(),
     selectedItems      : [...state.selected].map(id => ITEMS.find(i => i.id === id)?.name).join(", "),
     itemsWithDetails   : itemsSummary,
+    hoodieSize         : state.suboptions["hoodie_size"] || state.suboptions["hoddie_size"] || "—",
     sunglassesDesign   : state.suboptions["sunglasses_design"] || "—",
     sticksDesign       : state.suboptions["sticks_design"]     || "—",
-    frameDesign        : state.suboptions["frame_design"]      || "—",
+    notebookCover      : state.suboptions["notebook_cover"]    || "—",
     totalAmount        : state.total,
     suggestions        : document.getElementById("suggestions").value.trim() || "—",
     // Image uploads (base64) — uploaded to Google Drive by the Apps Script
-    paymentProof       : state.fileData["payment_proof"]  || null,
-    sticksPhoto        : state.fileData["sticks_photo"]   || null,
-    medalPhoto         : state.fileData["medal_photo"]    || null,
-    framePhoto         : state.fileData["frame_photo"]    || null,
+    paymentProof       : state.fileData["payment_proof"]   || null,
+    sticksPhoto        : state.fileData["sticks_photo"]    || null,
+    medalPhoto         : state.fileData["medal_photo"]     || null,
+    framePhoto         : state.fileData["frame_photo"]     || null,
+    notebookPhoto      : state.fileData["notebook_photo"]  || null,
+    newspaperPhoto     : state.fileData["newspaper_photo"] || null,
   };
 
 
@@ -702,6 +779,10 @@ function resetForm() {
   // Reset all file upload zones
   document.querySelectorAll(".file-upload-zone").forEach(z => z.style.display = "");
   document.querySelectorAll(".file-preview-wrap").forEach(p => p.style.display = "none");
+
+  // Department select needs its placeholder re-selected manually (reset() alone
+  // won't re-trigger our custom placeholder option state in all browsers)
+  populateDepartments();
 
   renderSummary();
 }
@@ -777,6 +858,7 @@ function checkEnvironment() {
 
 document.addEventListener("DOMContentLoaded", () => {
   checkEnvironment();
+  populateDepartments();
   renderItems();
   renderSummary();
 
@@ -820,6 +902,26 @@ function imgLoadError(imgEl) {
   wrap.classList.add("ratio-loaded");
 }
 
-// Expose public API for inline onclick handlers in rendered HTML
-const SurveyApp = { toggleItem, selectSub, closeSuccess, handleFileSelect, clearFile, checkEnvironment, fitImgWrap, imgLoadError };
+/** Copy Vodafone Cash number to clipboard and show toast */
+function copyVFNumber(btn) {
+  const number = "01055496208";
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(number).then(() => {
+      showToast("تم نسخ الرقم بنجاح: " + number, "success");
+      if (btn) {
+        const origText = btn.querySelector("span")?.textContent || "Copy";
+        if (btn.querySelector("span")) btn.querySelector("span").textContent = "Copied!";
+        setTimeout(() => {
+          if (btn.querySelector("span")) btn.querySelector("span").textContent = origText;
+        }, 2000);
+      }
+    }).catch(() => {
+      prompt("انسخ رقم فودافون كاش:", number);
+    });
+  } else {
+    prompt("انسخ رقم فودافون كاش:", number);
+  }
+}
 
+// Expose public API for inline onclick handlers in rendered HTML
+const SurveyApp = { toggleItem, selectSub, closeSuccess, handleFileSelect, clearFile, checkEnvironment, fitImgWrap, imgLoadError, copyVFNumber };

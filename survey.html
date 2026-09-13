@@ -169,6 +169,12 @@
                    placeholder="e.g. 01xxxxxxxxx"
                    maxlength="15" autocomplete="tel" required />
           </div>
+          <div class="field">
+            <label for="department">Department <span class="req">*</span></label>
+            <select id="department" name="department" required>
+              <!-- Options are filled in automatically by survey.js (see DEPARTMENTS list) -->
+            </select>
+          </div>
         </div>
       </div>
     </section>
@@ -221,6 +227,33 @@
       </div>
     </section>
 
+    <!-- ── Vodafone Cash Transfer Info ─────────────────────────── -->
+    <div class="vodafone-transfer-card">
+      <div class="vf-card-glow"></div>
+      <div class="vf-card-inner">
+        <div class="vf-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+            <path d="M6 15h2M14 15h4"/>
+          </svg>
+        </div>
+        <div class="vf-card-body">
+          <p class="vf-label">حوّل على فودافون كاش</p>
+          <div class="vf-number-row">
+            <span class="vf-number">01055496208</span>
+            <button type="button" class="vf-copy-btn" onclick="SurveyApp.copyVFNumber(this)" title="Copy number">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <p class="vf-hint">بعد التحويل، ارفع صورة الإيصال في الخطوة اللي جاية 👇</p>
+        </div>
+      </div>
+    </div>
+
     <!-- ── Section 4 · Payment Proof ──────────────────────────── -->
     <section class="form-section" id="sec-payment">
       <div class="section-header">
@@ -246,7 +279,7 @@
               </svg>
             </div>
             <span class="file-upload-title">Click to upload payment screenshot <span class="req">*</span></span>
-            <span class="file-upload-hint">Upload transfer confirmation / receipt &middot; Max 5MB &middot; JPG, PNG, WEBP</span>
+            <span class="file-upload-hint payment-clear-hint">⚠️ تأكد إن صورة التحويل واضحة ومش مقصوصة &middot; Max 5MB &middot; JPG, PNG, WEBP</span>
             <input type="file" id="finput-payment_proof" class="file-input-hidden"
                    accept="image/*"
                    data-sub="payment_proof"
