@@ -82,7 +82,7 @@ const ITEMS = [
         id      : "sticks_preview",
         label   : "Sticks Design",
         type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1BvY1_Rytt5Hcq2MdYbLOa-DNuLBWbN7z",
+        image   : "https://lh3.googleusercontent.com/d/1UFSDE68N8CgsBbtDs0LwDwMztAj__jrX",
         caption : "Senior '27 Sticks — official design",
       },
       {
