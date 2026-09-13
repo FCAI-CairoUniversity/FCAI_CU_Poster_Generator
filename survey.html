@@ -227,7 +227,7 @@
       </div>
     </section>
 
-    <!-- ── Vodafone Cash Transfer Info ─────────────────────────── -->
+    <!-- ── Payment Transfer Info (Vodafone Cash & InstaPay) ─── -->
     <div class="vodafone-transfer-card">
       <div class="vf-card-glow"></div>
       <div class="vf-card-inner">
@@ -239,7 +239,10 @@
           </svg>
         </div>
         <div class="vf-card-body">
-          <p class="vf-label">حوّل على فودافون كاش</p>
+          <div class="vf-methods-tags">
+            <span class="pay-badge vf-badge">Vodafone Cash</span>
+          </div>
+          <p class="vf-label">حوّل على فودافون كاش دايركت أو انستاباي ل فودافون كاش</p>
           <div class="vf-number-row">
             <span class="vf-number">01055496208</span>
             <button type="button" class="vf-copy-btn" onclick="SurveyApp.copyVFNumber(this)" title="Copy number">
@@ -250,6 +253,90 @@
             </button>
           </div>
           <p class="vf-hint">بعد التحويل، ارفع صورة الإيصال في الخطوة اللي جاية 👇</p>
+        </div>
+      </div>
+
+      <!-- ── InstaPay How-to-Pay Toggle & Guide ──────────────────── -->
+      <div class="instapay-guide-wrapper">
+        <button type="button" class="instapay-toggle-btn" id="ipGuideToggleBtn" onclick="SurveyApp.toggleInstaPayGuide()" aria-expanded="false">
+          <div class="ip-toggle-content">
+            <span class="ip-logo-pill">⚡ InstaPay</span>
+            <span class="ip-toggle-text">ازاي تدفع بـ انستاباي للمحفظة؟ اضغط لعرض الخطوات بالصور 📸</span>
+          </div>
+          <span class="ip-toggle-chevron">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+
+        <div class="instapay-guide-panel" id="instapayGuidePanel">
+          <div class="ip-guide-note">
+            <span class="ip-note-icon">⚠️</span>
+            <div class="ip-note-text">
+              <strong>تنبيه هام جداً:</strong> التحويل من تطبيق انستاباي يتم باختيار <strong>"محفظة إلكترونية" (Electronic Wallet)</strong> وليس حساب بنكي!
+            </div>
+          </div>
+
+          <div class="ip-steps-grid">
+            <!-- Step 1 Card -->
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3', 'الخطوة 1: من الصفحة الرئيسية في تطبيق انستاباي اضغط على (إرسال نقود)')">
+              <div class="ip-step-header">
+                <span class="ip-step-number">1</span>
+                <div class="ip-step-info">
+                  <span class="ip-step-heading">الخطوة الأولى</span>
+                  <span class="ip-step-desc">من الصفحة الرئيسية في التطبيق، اضغط على <strong>"إرسال نقود"</strong></span>
+                </div>
+              </div>
+              <div class="ip-image-container">
+                <img src="https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3" alt="الخطوة 1 - إرسال نقود من انستاباي" loading="lazy" referrerpolicy="no-referrer">
+                <div class="ip-zoom-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span>اضغط لتكبير الصورة 🔍</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2 Card -->
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0', 'الخطوة 2: اختر محفظة إلكترونية، اكتب رقم المحفظة 01055496208 والمبلغ المطلوب ثم اضغط التالي')">
+              <div class="ip-step-header">
+                <span class="ip-step-number">2</span>
+                <div class="ip-step-info">
+                  <span class="ip-step-heading">الخطوة الثانية</span>
+                  <span class="ip-step-desc">اختر أيقونة <strong>"محفظة إلكترونية"</strong>، واكتب الرقم <code>01055496208</code> والمبلغ، ثم اضغط <strong>"التالي"</strong></span>
+                </div>
+              </div>
+              <div class="ip-image-container">
+                <img src="https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0" alt="الخطوة 2 - اختيار محفظة إلكترونية وإدخال الرقم والمبلغ" loading="lazy" referrerpolicy="no-referrer">
+                <div class="ip-zoom-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span>اضغط لتكبير الصورة 🔍</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 Card -->
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih', 'الخطوة 3: تأكيد التحويل - يظهر اسم المستلم (سيف ا**** ع***) ورقم المحفظة (01055496208)')">
+              <div class="ip-step-header">
+                <span class="ip-step-number">3</span>
+                <div class="ip-step-info">
+                  <span class="ip-step-heading">الخطوة الثالثة</span>
+                  <span class="ip-step-desc">سيظهر لك اسم المستلم: <strong>سيف ا****</strong> والرقم <code>01055496208</code>، تأكد واضغط <strong>"تأكيد"</strong></span>
+                </div>
+              </div>
+              <div class="ip-image-container">
+                <img src="https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih" alt="الخطوة 3 - تأكيد التحويل واسم المستلم" loading="lazy" referrerpolicy="no-referrer">
+                <div class="ip-zoom-badge">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                  <span>اضغط لتكبير الصورة 🔍</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="ip-guide-footer">
+            <span>📸 بعد إتمام التحويل بنجاح، التقط سكرين شوت للإيصال وارفعها في الخطوة التالية بالأسفل 👇</span>
+          </div>
         </div>
       </div>
     </div>
@@ -361,6 +448,21 @@
 
 <!-- ══ Toast Container ═══════════════════════════════════════════ -->
 <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<!-- ══ Image Lightbox Modal ─────────────────────────────────────── -->
+<div class="img-lightbox-overlay" id="imgLightboxOverlay" onclick="SurveyApp.closeLightbox(event)" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="img-lightbox-card">
+    <button type="button" class="img-lightbox-close" onclick="SurveyApp.closeLightbox()" title="إغلاق (Esc)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="img-lightbox-body">
+      <img id="imgLightboxSrc" src="" alt="InstaPay guide preview">
+      <div id="imgLightboxCaption" class="img-lightbox-caption"></div>
+    </div>
+  </div>
+</div>
 
 <script src="scripts/navbar.js"></script>
 <script src="scripts/survey.js"></script>

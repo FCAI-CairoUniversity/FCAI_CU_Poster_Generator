@@ -835,44 +835,10 @@ function showToast(message, type = "info", duration = 3800) {
 
 
 // ══════════════════════════════════════════════════════════════════
-//  🌐  ENVIRONMENT & RELEASE MODE CHECK
-// ══════════════════════════════════════════════════════════════════
-
-/**
- * Automatically checks whether we are on Localhost/Dev or Production.
- * - Local (`localhost`, `127.0.0.1`, `file://`) or `?preview=merch`: Shows working live form.
- * - Production: Shows luxury "Coming Soon" announcement card and hides active form.
- */
-function checkEnvironment() {
-  const isLocal =
-    window.location.protocol === 'file:' ||
-    window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1';
-
-  const params = new URLSearchParams(window.location.search);
-  const isPreview = params.get('preview') === 'merch' || params.get('admin') === '1';
-
-  const comingSoonView = document.getElementById('comingSoonView');
-  const surveyForm = document.getElementById('surveyForm');
-  const heroSection = document.querySelector('.hero');
-
-  if (isLocal || isPreview) {
-    if (comingSoonView) comingSoonView.style.display = 'none';
-    if (surveyForm) surveyForm.style.display = '';
-    if (heroSection) heroSection.style.display = '';
-  } else {
-    if (comingSoonView) comingSoonView.style.display = 'block';
-    if (surveyForm) surveyForm.style.display = 'none';
-    if (heroSection) heroSection.style.display = 'none';
-  }
-}
-
-// ══════════════════════════════════════════════════════════════════
 //  🚀  INIT
 // ══════════════════════════════════════════════════════════════════
 
 document.addEventListener("DOMContentLoaded", () => {
-  checkEnvironment();
   populateDepartments();
   renderItems();
   renderSummary();
@@ -931,12 +897,69 @@ function copyVFNumber(btn) {
         }, 2000);
       }
     }).catch(() => {
-      prompt("انسخ رقم فودافون كاش:", number);
+      prompt("انسخ رقم التحويل:", number);
     });
   } else {
-    prompt("انسخ رقم فودافون كاش:", number);
+    prompt("انسخ رقم التحويل:", number);
   }
 }
 
+/** Toggle InstaPay step-by-step visual guide panel */
+function toggleInstaPayGuide() {
+  const panel = document.getElementById("instapayGuidePanel");
+  const btn = document.getElementById("ipGuideToggleBtn");
+  if (!panel || !btn) return;
+  const isExpanded = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", !isExpanded ? "true" : "false");
+  panel.classList.toggle("open", !isExpanded);
+}
+
+/** Open image in full-size lightbox */
+function openLightbox(src, caption) {
+  const overlay = document.getElementById("imgLightboxOverlay");
+  const img = document.getElementById("imgLightboxSrc");
+  const cap = document.getElementById("imgLightboxCaption");
+  if (!overlay || !img) return;
+  img.src = src;
+  if (cap) cap.textContent = caption || "";
+  overlay.classList.add("open");
+  overlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+/** Close image lightbox */
+function closeLightbox(e) {
+  if (e && e.target && e.target.id !== "imgLightboxOverlay" && !e.target.closest(".img-lightbox-close")) {
+    return;
+  }
+  const overlay = document.getElementById("imgLightboxOverlay");
+  if (!overlay) return;
+  overlay.classList.remove("open");
+  overlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+// Close lightbox on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const overlay = document.getElementById("imgLightboxOverlay");
+    if (overlay && overlay.classList.contains("open")) {
+      closeLightbox();
+    }
+  }
+});
+
 // Expose public API for inline onclick handlers in rendered HTML
-const SurveyApp = { toggleItem, selectSub, closeSuccess, handleFileSelect, clearFile, checkEnvironment, fitImgWrap, imgLoadError, copyVFNumber };
+const SurveyApp = {
+  toggleItem,
+  selectSub,
+  closeSuccess,
+  handleFileSelect,
+  clearFile,
+  fitImgWrap,
+  imgLoadError,
+  copyVFNumber,
+  toggleInstaPayGuide,
+  openLightbox,
+  closeLightbox
+};
