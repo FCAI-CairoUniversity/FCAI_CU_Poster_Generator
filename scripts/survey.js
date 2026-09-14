@@ -103,12 +103,12 @@ const ITEMS = [
     price: 80,
     icon: "star",
     suboptions: [
-      {
-        id      : "keychain_preview",
-        label   : "Keychain Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1RiRwi3VbPIQ5ctRbaIVH-WTMcT-Q36yN",
-        caption : "Senior '27 Acrylic Keychain — official design",
+        {
+            id      : "keychain_preview",
+            label   : "Keychain Design",
+            type    : "image-preview",
+            image   : "https://lh3.googleusercontent.com/d/1M_FYBrtjkG_NvV0nmT_-NbYMQhyIBOFX",
+            caption : "Senior '27 Acrylic Keychain — official design",
       },
       {
         id       : "keychain_photo",
