@@ -12,99 +12,9 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9Yhjr7U5gWEKgQhuAWTezLDMlyXuVh40oFgZu81r2q6zpRn8S_ajxYglbHQk3okys/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEN_kcZtPU9kSwU2NnmdgUUDapdFAa7DKf-5sY2pp8jsfMv5aW9t58Pymp697nYPAl/exec";
 
 
-// ══════════════════════════════════════════════════════════════════
-// 🔒 LOCALHOST ONLY
-// ══════════════════════════════════════════════════════════════════
-
-const isLocalhost =
-  location.hostname === "localhost" ||
-  location.hostname === "127.0.0.1" ||
-  location.hostname === "::1";
-
-if (!isLocalhost) {
-  document.documentElement.innerHTML = `
-    <html>
-      <head>
-        <title>Temporarily Closed</title>
-        <style>
-          * {
-            box-sizing: border-box;
-          }
-
-          body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f5ef;
-            font-family: Arial, sans-serif;
-            color: #2d241f;
-            text-align: center;
-          }
-
-          .closed-box {
-            width: min(90%, 500px);
-            padding: 50px 35px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-          }
-
-          .icon {
-            font-size: 55px;
-            margin-bottom: 20px;
-          }
-
-          h1 {
-            margin: 0 0 12px;
-            font-size: 30px;
-          }
-
-          p {
-            margin: 0;
-            color: #777;
-            font-size: 16px;
-            line-height: 1.6;
-          }
-
-          .status {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: #f1e8dc;
-            color: #6b4f3f;
-            font-size: 14px;
-            font-weight: 600;
-          }
-        </style>
-      </head>
-
-      <body>
-        <div class="closed-box">
-          <div class="icon">🔒</div>
-
-          <h1>Temporarily Closed</h1>
-
-          <p>
-            This graduation survey is currently unavailable.
-            Please check back later.
-          </p>
-
-          <div class="status">
-            Registration is temporarily closed
-          </div>
-        </div>
-      </body>
-    </html>
-  `;
-
-  throw new Error("Survey is available on localhost only.");
-}
 /**
  * Departments shown in the "Department" dropdown.
  * Edit this list any time — the dropdown rebuilds itself from it.
@@ -166,15 +76,26 @@ const ITEMS = [
     id: "sticks",
     name: "Photo Sticks",
     description: "Decorative wooden prop sticks for graduation photoshoots and group photos.",
-    price: 25,
+    price: 0,
     icon: "star",
     suboptions: [
       {
-        id      : "sticks_preview",
-        label   : "Sticks Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1mM8xaLdD37BIlThJteBeu7FunBvOV8g9",
-        caption : "Senior '27 Sticks — official design",
+        id      : "sticks_type",
+        label   : "Choose Sticks Type",
+        required: true,
+        type    : "image-choices",
+        options : [
+          {
+            value : "wood",
+            label : "Wood — 50 EGP",
+            image : "https://lh3.googleusercontent.com/d/1R1qasLbsCL0HjSkZk5UFzo5GDCwCwXV8",
+          },
+          {
+            value : "paper",
+            label : "Paper — 35 EGP",
+            image : "https://lh3.googleusercontent.com/d/1mM8xaLdD37BIlThJteBeu7FunBvOV8g9",
+          },
+        ],
       },
       {
         id       : "sticks_photo",
@@ -242,6 +163,7 @@ const ITEMS = [
     name: "Certificate Frame",
     description: "Commemorative diploma frame featuring the graduate's name, faculty, and graduation year.",
     price: 140,
+    disabled : true, 
     icon: "frame",
     suboptions: [
       {
@@ -423,8 +345,10 @@ function renderItems() {
         <span class="item-price-tag">
           ${item.disabled
             ? `<span class="item-coming-soon-badge">Coming Soon</span>`
-            : `<span class="item-price-amount">${item.price}</span>
-               <span class="item-price-unit">EGP / person</span>`
+            : `<span class="item-price-amount" id="price-display-${item.id}">
+                ${item.id === "sticks" ? "35 – 50" : item.price}
+              </span>
+              <span class="item-price-unit">EGP / person</span>`
           }
         </span>
 
@@ -618,7 +542,12 @@ function renderSummary() {
           <div class="summary-item-name">${item.name}</div>
           ${details.length ? `<div class="summary-sub-detail">${details.join(" &middot; ")}</div>` : ""}
         </div>
-        <div class="summary-price">${item.price} EGP</div>
+        <div class="summary-price">
+          ${id === "sticks"
+            ? (state.suboptions["sticks_type"] === "wood" ? "50" :
+              state.suboptions["sticks_type"] === "paper" ? "35" : "0") + " EGP"
+            : item.price + " EGP"}
+        </div>
       </div>`;
   }).join("");
 
@@ -635,7 +564,17 @@ function renderSummary() {
 
   state.total = [...state.selected].reduce((sum, id) => {
     const item = ITEMS.find(i => i.id === id);
-    return sum + (item ? item.price : 0);
+    if (!item) return sum;
+
+    // Sticks: price depends on wood/paper choice
+    if (id === "sticks") {
+      const choice = state.suboptions["sticks_type"];
+      if (choice === "wood")  return sum + 50;
+      if (choice === "paper") return sum + 35;
+      return sum;
+    }
+
+    return sum + item.price;
   }, 0);
 
   wrap.innerHTML = `
@@ -704,6 +643,11 @@ function selectSub(itemId, subId, value, btn) {
     delete state.suboptions[subId];
   } else {
     state.suboptions[subId] = value;
+    // Update sticks price display dynamically
+    if (subId === "sticks_type") {
+      const priceEl = document.getElementById("price-display-sticks");
+      if (priceEl) priceEl.textContent = value === "wood" ? "50" : "35";
+    }
     btn.classList.add("active");
   }
 
@@ -800,14 +744,21 @@ async function handleSubmit(e) {
     studentId          : document.getElementById("studentId").value.trim(),
     phone              : document.getElementById("phone").value.trim(),
     department         : document.getElementById("department").value.trim(),
-    selectedItems      : [...state.selected].map(id => ITEMS.find(i => i.id === id)?.name).join(", "),
+    selectedItems : [...state.selected].map(id => {
+    if (id === "sticks") {
+      const type = state.suboptions["sticks_type"];
+      return type === "wood" ? "Photo Sticks Wood" : "Photo Sticks Paper";
+    }
+    return ITEMS.find(i => i.id === id)?.name;
+  }).join(", "),
     itemsWithDetails   : itemsSummary,
     hoodieSize         : state.suboptions["hoodie_size"] || state.suboptions["hoddie_size"] || "—",
     sunglassesDesign   : state.suboptions["sunglasses_design"] || "—",
     sticksDesign       : state.suboptions["sticks_design"]     || "—",
     notebookCover      : state.suboptions["notebook_cover"]    || "—",
+    sticksType  : state.suboptions["sticks_type"] || "—",
     totalAmount        : state.total,
-    suggestions        : document.getElementById("suggestions").value.trim() || "—",
+    Notes        : document.getElementById("Notes").value.trim() || "—",
     // Image uploads (base64) — uploaded to Google Drive by the Apps Script
     paymentProof       : state.fileData["payment_proof"]   || null,
     sticksPhoto        : state.fileData["sticks_photo"]    || null,
@@ -881,6 +832,7 @@ function resetForm() {
   document.querySelectorAll(".item-card.selected").forEach(c => c.classList.remove("selected"));
   document.querySelectorAll(".item-suboptions.open").forEach(p => p.classList.remove("open"));
   document.querySelectorAll(".size-pill.active, .design-card.active").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".image-choice-card.active").forEach(b => b.classList.remove("active"));
 
   // Reset all file upload zones
   document.querySelectorAll(".file-upload-zone").forEach(z => z.style.display = "");
