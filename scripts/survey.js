@@ -20,92 +20,92 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEN_kcZtPU9kSw
 // 🔒 LOCALHOST ONLY
 // ══════════════════════════════════════════════════════════════════
 
-const isLocalhost =
-  location.hostname === "localhost" ||
-  location.hostname === "127.0.0.1" ||
-  location.hostname === "::1";
+// const isLocalhost =
+//   location.hostname === "localhost" ||
+//   location.hostname === "127.0.0.1" ||
+//   location.hostname === "::1";
 
-if (!isLocalhost) {
-  document.documentElement.innerHTML = `
-    <html>
-      <head>
-        <title>Temporarily Closed</title>
-        <style>
-          * {
-            box-sizing: border-box;
-          }
+// if (!isLocalhost) {
+//   document.documentElement.innerHTML = `
+//     <html>
+//       <head>
+//         <title>Temporarily Closed</title>
+//         <style>
+//           * {
+//             box-sizing: border-box;
+//           }
 
-          body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f5ef;
-            font-family: Arial, sans-serif;
-            color: #2d241f;
-            text-align: center;
-          }
+//           body {
+//             margin: 0;
+//             min-height: 100vh;
+//             display: flex;
+//             align-items: center;
+//             justify-content: center;
+//             background: #f8f5ef;
+//             font-family: Arial, sans-serif;
+//             color: #2d241f;
+//             text-align: center;
+//           }
 
-          .closed-box {
-            width: min(90%, 500px);
-            padding: 50px 35px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-          }
+//           .closed-box {
+//             width: min(90%, 500px);
+//             padding: 50px 35px;
+//             background: white;
+//             border-radius: 20px;
+//             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+//           }
 
-          .icon {
-            font-size: 55px;
-            margin-bottom: 20px;
-          }
+//           .icon {
+//             font-size: 55px;
+//             margin-bottom: 20px;
+//           }
 
-          h1 {
-            margin: 0 0 12px;
-            font-size: 30px;
-          }
+//           h1 {
+//             margin: 0 0 12px;
+//             font-size: 30px;
+//           }
 
-          p {
-            margin: 0;
-            color: #777;
-            font-size: 16px;
-            line-height: 1.6;
-          }
+//           p {
+//             margin: 0;
+//             color: #777;
+//             font-size: 16px;
+//             line-height: 1.6;
+//           }
 
-          .status {
-            display: inline-block;
-            margin-top: 25px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: #f1e8dc;
-            color: #6b4f3f;
-            font-size: 14px;
-            font-weight: 600;
-          }
-        </style>
-      </head>
+//           .status {
+//             display: inline-block;
+//             margin-top: 25px;
+//             padding: 8px 16px;
+//             border-radius: 20px;
+//             background: #f1e8dc;
+//             color: #6b4f3f;
+//             font-size: 14px;
+//             font-weight: 600;
+//           }
+//         </style>
+//       </head>
 
-      <body>
-        <div class="closed-box">
-          <div class="icon">🔒</div>
+//       <body>
+//         <div class="closed-box">
+//           <div class="icon">🔒</div>
 
-          <h1>Temporarily Closed</h1>
+//           <h1>Temporarily Closed</h1>
 
-          <p>
-            This graduation survey is currently unavailable.
-            Please check back later.
-          </p>
+//           <p>
+//             This graduation survey is currently unavailable.
+//             Please check back later.
+//           </p>
 
-          <div class="status">
-            Registration is temporarily closed
-          </div>
-        </div>
-      </body>
-    </html>
-  `;
+//           <div class="status">
+//             Registration is temporarily closed
+//           </div>
+//         </div>
+//       </body>
+//     </html>
+//   `;
 
-  throw new Error("Survey is available on localhost only.");
-}
+//   throw new Error("Survey is available on localhost only.");
+// }
 
 /**
  * Departments shown in the "Department" dropdown.
