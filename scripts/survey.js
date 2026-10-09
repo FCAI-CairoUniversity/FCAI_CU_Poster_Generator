@@ -3,6 +3,9 @@
  * ──────────────────────────────────────────────────────────
  * Handles: item config, dynamic rendering, conditional sub-options,
  * live price calculator, form validation, and Apps Script submission.
+ *
+ * FIX: Hoodie and Quarter Zip are one card in the UI, but they are sent
+ * to the backend as two separate products (name + size column).
  */
 
 "use strict";
@@ -12,100 +15,7 @@
 // ══════════════════════════════════════════════════════════════════
 
 /** Replace with your deployed Google Apps Script Web App URL. */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEN_kcZtPU9kSwU2NnmdgUUDapdFAa7DKf-5sY2pp8jsfMv5aW9t58Pymp697nYPAl/exec";
-
-"use strict";
-
-// ══════════════════════════════════════════════════════════════════
-// 🔒 LOCALHOST ONLY
-// ══════════════════════════════════════════════════════════════════
-
-// const isLocalhost =
-//   location.hostname === "localhost" ||
-//   location.hostname === "127.0.0.1" ||
-//   location.hostname === "::1";
-
-// if (!isLocalhost) {
-//   document.documentElement.innerHTML = `
-//     <html>
-//       <head>
-//         <title>Temporarily Closed</title>
-//         <style>
-//           * {
-//             box-sizing: border-box;
-//           }
-
-//           body {
-//             margin: 0;
-//             min-height: 100vh;
-//             display: flex;
-//             align-items: center;
-//             justify-content: center;
-//             background: #f8f5ef;
-//             font-family: Arial, sans-serif;
-//             color: #2d241f;
-//             text-align: center;
-//           }
-
-//           .closed-box {
-//             width: min(90%, 500px);
-//             padding: 50px 35px;
-//             background: white;
-//             border-radius: 20px;
-//             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-//           }
-
-//           .icon {
-//             font-size: 55px;
-//             margin-bottom: 20px;
-//           }
-
-//           h1 {
-//             margin: 0 0 12px;
-//             font-size: 30px;
-//           }
-
-//           p {
-//             margin: 0;
-//             color: #777;
-//             font-size: 16px;
-//             line-height: 1.6;
-//           }
-
-//           .status {
-//             display: inline-block;
-//             margin-top: 25px;
-//             padding: 8px 16px;
-//             border-radius: 20px;
-//             background: #f1e8dc;
-//             color: #6b4f3f;
-//             font-size: 14px;
-//             font-weight: 600;
-//           }
-//         </style>
-//       </head>
-
-//       <body>
-//         <div class="closed-box">
-//           <div class="icon">🔒</div>
-
-//           <h1>Temporarily Closed</h1>
-
-//           <p>
-//             This graduation survey is currently unavailable.
-//             Please check back later.
-//           </p>
-
-//           <div class="status">
-//             Registration is temporarily closed
-//           </div>
-//         </div>
-//       </body>
-//     </html>
-//   `;
-
-//   throw new Error("Survey is available on localhost only.");
-// }
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzY1q7fEZqN5i541wAgP66NPoRfnzp1-zcAKC5HeTVKBHxySR_TR_IFt49Y73Ml-hit/exec";
 
 /**
  * Departments shown in the "Department" dropdown.
@@ -124,198 +34,101 @@ const DEPARTMENTS = [
  * ─ price: shown on the card and used in the calculator (EGP)
  * ─ suboptions: expand below the card when item is selected
  *   ∙ type "pills"        → flat list of buttons (e.g. sizes)
- *   ∙ type "design-cards" → colored swatch cards (e.g. frame styles)
+ *   ∙ type "image-preview" → display-only image (no user choice)
  *   ∙ required: true      → user must choose before saving
  */
 const ITEMS = [
   {
-    id       : "hoodie",
-    name     : "Senior Hoodie",
-    description: "Premium graduation hoodie with the batch design — stay cozy on graduation day.",
-    price    : 600,
-    icon     : "shirt",
-    disabled : true,            // ← coming soon / not available yet
-    suboptions: [],
-  },
-  {
-    id: "sunglasses",
-    name: "Senior Sunglasses",
-    description: 'Sunglasses printed with "Senior" and the graduation year — perfect for group shots.',
-    price: 80,
-    icon: "glasses",
-    suboptions: [
+    id         : "hoodie",
+    name       : "Senior Hoodie / Quarter Zip",
+    description: "The official Senior '27 hoodie and quarter zip, available in sizes S to 2XL and featuring our exclusive senior design.",
+    price      : 670,
+    icon       : "shirt",
+    suboptions : [
       {
-        id       : "sunglasses_design",
-        label    : "Choose Your Design",
-        required : true,
-        type     : "image-choices",
-        options  : [
-          {
-            value : "white",
-            label : "White",
-            image : "https://lh3.googleusercontent.com/d/1nHbx7lqbgOthRRSt5uZUWZ9E92VfEE7m",
-          },
-          {
-            value : "black",
-            label : "Black",
-            image : "https://lh3.googleusercontent.com/d/1K3E5-dBGdArKc-VvXqPwOPA-7Mooo7r2",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "sticks",
-    name: "Photo Sticks",
-    description: "Decorative wooden prop sticks for graduation photoshoots and group photos.",
-    price: 0,
-    icon: "star",
-    suboptions: [
-      {
-        id      : "sticks_type",
-        label   : "Choose Sticks Type",
+        id      : "hoodie_style",
+        label   : "Choose Style",
         required: true,
-        type    : "image-choices",
+        type    : "pills",
         options : [
-          {
-            value : "wood",
-            label : "Wood — 50 EGP",
-            image : "https://lh3.googleusercontent.com/d/1R1qasLbsCL0HjSkZk5UFzo5GDCwCwXV8",
-          },
-          {
-            value : "paper",
-            label : "Paper — 35 EGP",
-            image : "https://lh3.googleusercontent.com/d/1mM8xaLdD37BIlThJteBeu7FunBvOV8g9",
-          },
+          { value: "hoodie",  label: "Hoodie 🧥" },
+          { value: "quarter", label: "Quarter Zip 🤐" },
         ],
       },
       {
-        id       : "sticks_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the stick design",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
+        id      : "hoodie_size",
+        label   : "Choose Size",
+        required: true,
+        type    : "pills",
+        options : [
+          { value: "S",   label: "S"   },
+          { value: "M",   label: "M"   },
+          { value: "L",   label: "L"   },
+          { value: "XL",  label: "XL"  },
+          { value: "2XL", label: "2XL" },
+        ],
+      },
+      {
+        id     : "hoodie_size_chart",
+        label  : "Size Chart — Hoodie & Quarter Zip",
+        type   : "image-preview",
+        image  : "https://lh3.googleusercontent.com/d/1r3zOO8JSXobMVTH2gManKsAGSp1EIbtb",
+        caption: "Size Guide — Hoodie & Quarter Zip",
       },
     ],
   },
   {
-    id: "keychain",
-    name: "Acrylic Keychain",
-    description: "Personalised acrylic keychain badge with the graduation batch logo.",
-    price: 80,
-    icon: "star",
-    suboptions: [
-        {
-          id      : "keychain_preview",
-          label   : "Keychain Design",
-          type    : "image-preview",
-          image   : "https://lh3.googleusercontent.com/d/1M_FYBrtjkG_NvV0nmT_-NbYMQhyIBOFX",
-          caption : "Senior '27 Acrylic Keychain — official design",
-        },
+    id         : "notebook",
+    name       : "Senior Notebook",
+    description: "A Senior '27 graduation notebook featuring our exclusive design — perfect as a gift or a memorable keepsake.",
+    price      : 150,
+    icon       : "book",
+    suboptions : [
       {
-        id       : "keychain_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the keychain",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
+        id     : "notebook_front_preview",
+        label  : "Front Design",
+        type   : "image-preview",
+        image  : "https://lh3.googleusercontent.com/d/1OC6RRFUdHDKZ4VvLgO7L85j6e3Qe3iZ2",
+        caption: "Front Cover — Senior '27 Notebook",
+      },
+      {
+        id     : "notebook_back_preview",
+        label  : "Back Design",
+        type   : "image-preview",
+        image  : "https://lh3.googleusercontent.com/d/1UNznlkaFuepkZZCMxodajtnQnAT4CUqT",
+        caption: "Back Cover — Senior '27 Notebook",
       },
     ],
   },
   {
-    id: "pin",
-    name: "Acrylic Pin",
-    description: "Personalised acrylic pin badge with the graduation batch logo.",
-    price: 80,
-    icon: "star",
-    suboptions: [
+    id         : "cap",
+    name       : "Senior Cap",
+    description: "An embroidered cap featuring the Senior '27 logo — the perfect accessory for graduation day.",
+    price      : 150,
+    icon       : "cap",
+    suboptions : [
       {
-        id      : "pin_preview",
-        label   : "pin Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1_JBGnwnYajlQY36fq2eTOnXwX0tK-ajz",
-        caption : "Senior '27 Acrylic Pin — official design",
-      },
-      {
-        id       : "pin_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the pin",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
+        id     : "cap_preview",
+        label  : "Cap Design",
+        type   : "image-preview",
+        image  : "https://lh3.googleusercontent.com/d/1J3qlGGPT4dxQh_Xg2OeJ4omWfwHRva1g",
+        caption: "Official Senior '27 Cap",
       },
     ],
   },
   {
-    id: "frame",
-    name: "Certificate Frame",
-    description: "Commemorative diploma frame featuring the graduate's name, faculty, and graduation year.",
-    price: 140,
-    disabled : true, 
-    icon: "frame",
-    suboptions: [
+    id         : "laptop_bag",
+    name       : "Laptop Bag",
+    description: "A laptop bag featuring the Senior '27 design, suitable for laptops with screens up to 15.6 inches.",
+    price      : 350,
+    icon       : "bag",
+    suboptions : [
       {
-        id      : "frame_preview",
-        label   : "Frame Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1Ihicxifrg5yiwq9ztG_BTnYpjahwGV3P",
-        caption : "Senior '27 Certificate Frame — official design",
-      },
-      {
-        id       : "frame_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the frame",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
-      },
-    ],
-  },
-  {
-    id: "notebook",
-    name: "Senior Notebook",
-    description: "A personalised graduation notebook with your name and the senior batch design.",
-    price: 170,
-    icon: "book",
-    suboptions: [
-      {
-        id       : "notebook_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the notebook cover",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
-      },
-    ],
-  },
-  {
-    id: "newspaper",
-    name: "Senior Newspaper",
-    description: "A commemorative graduation newspaper featuring the senior batch.",
-    price: 70,
-    icon: "newspaper",
-    suboptions: [
-      {
-        id      : "newspaper_preview",
-        label   : "Newspaper Design",
-        type    : "image-preview",
-        image   : "https://lh3.googleusercontent.com/d/1FSlGL7bgYLgvxzMnr3vFN3evX57WwYWG",
-        caption : "Senior '27 Newspaper — official design",
-      },
-      {
-        id       : "newspaper_photo",
-        label    : "Your Reference Photo",
-        hint     : "Upload your reference photo for the newspaper",
-        required : true,
-        type     : "file",
-        accept   : "image/*",
-        maxSizeMB: 4,
+        id     : "bag_preview",
+        label  : "Bag Design",
+        type   : "image-preview",
+        image  : "https://lh3.googleusercontent.com/d/1k8mhns-ZmERWhgKRmJ1S2VH29V8CZWTb",
+        caption: "Official Senior '27 Laptop Bag",
       },
     ],
   },
@@ -329,16 +142,11 @@ const ITEMS = [
 const ICON_PATHS = {
   shirt: `<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/>`,
 
-  glasses: `<circle cx="6" cy="13.5" r="3.5"/><circle cx="18" cy="13.5" r="3.5"/>
-            <path d="M9.5 13.5h5M2 12c0-3 1.5-5 4-5m16 5c0-3-1.5-5-4-5"/>`,
-
-  star: `<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>`,
-
   book: `<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>`,
 
-  frame: `<rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="10" height="10" rx="1"/>`,
+  cap: `<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17c0 2.21 4.48 4 10 4s10-1.79 10-4"/><path d="M2 12c0 2.21 4.48 4 10 4s10-1.79 10-4"/>`,
 
-  newspaper: `<rect x="3" y="4" width="18" height="16" rx="1"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="11" x2="17" y2="11"/><line x1="7" y1="14" x2="13" y2="14"/>`,
+  bag: `<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>`,
 
   check: `<polyline points="20 6 9 17 4 12"/>`,
 
@@ -370,10 +178,10 @@ const state = {
   /** Set of selected item IDs */
   selected: new Set(),
 
-  /** Sub-option selections: { "hoddie_size": "M", "notebook_cover": "classic", ... } */
+  /** Sub-option selections: { "hoodie_style": "hoodie", "hoodie_size": "M", ... } */
   suboptions: {},
 
-  /** File uploads: { "sticks_photo": { base64, mimeType, name }, ... } */
+  /** File uploads: { "payment_proof": { base64, mimeType, name }, ... } */
   fileData: {},
 
   /** Running total (EGP) */
@@ -387,9 +195,7 @@ const state = {
 
 /**
  * Fills the #department <select> with options built from the
- * DEPARTMENTS list above. Expects the HTML to already contain:
- *   <select id="department" required></select>
- * placed near Full Name / Student ID / Phone in the form.
+ * DEPARTMENTS list above.
  */
 function populateDepartments() {
   const select = document.getElementById("department");
@@ -437,10 +243,8 @@ function renderItems() {
         <span class="item-price-tag">
           ${item.disabled
             ? `<span class="item-coming-soon-badge">Coming Soon</span>`
-            : `<span class="item-price-amount" id="price-display-${item.id}">
-                ${item.id === "sticks" ? "35 – 50" : item.price}
-              </span>
-              <span class="item-price-unit">EGP / person</span>`
+            : `<span class="item-price-amount" id="price-display-${item.id}">${item.price}</span>
+               <span class="item-price-unit">EGP / person</span>`
           }
         </span>
 
@@ -466,7 +270,7 @@ function renderItems() {
   `).join("");
 }
 
-/** Render a single sub-option group (pills or design cards). */
+/** Render a single sub-option group. */
 function renderSuboption(itemId, sub) {
   if (sub.type === "pills") {
     return `<div class="pills-row" id="row-${sub.id}">
@@ -620,7 +424,7 @@ function renderSummary() {
     const item = ITEMS.find(i => i.id === id);
     if (!item) return "";
 
-    // Collect sub-detail text (skip image-preview — no user choice needed)
+    // Collect sub-detail text (skip image-preview & file — no user choice)
     const details = item.suboptions
       .filter(sub => sub.type !== "image-preview" && sub.type !== "file" && state.suboptions[sub.id])
       .map(sub => {
@@ -634,12 +438,7 @@ function renderSummary() {
           <div class="summary-item-name">${item.name}</div>
           ${details.length ? `<div class="summary-sub-detail">${details.join(" &middot; ")}</div>` : ""}
         </div>
-        <div class="summary-price">
-          ${id === "sticks"
-            ? (state.suboptions["sticks_type"] === "wood" ? "50" :
-              state.suboptions["sticks_type"] === "paper" ? "35" : "0") + " EGP"
-            : item.price + " EGP"}
-        </div>
+        <div class="summary-price">${item.price} EGP</div>
       </div>`;
   }).join("");
 
@@ -657,15 +456,6 @@ function renderSummary() {
   state.total = [...state.selected].reduce((sum, id) => {
     const item = ITEMS.find(i => i.id === id);
     if (!item) return sum;
-
-    // Sticks: price depends on wood/paper choice
-    if (id === "sticks") {
-      const choice = state.suboptions["sticks_type"];
-      if (choice === "wood")  return sum + 50;
-      if (choice === "paper") return sum + 35;
-      return sum;
-    }
-
     return sum + item.price;
   }, 0);
 
@@ -691,12 +481,11 @@ function renderSummary() {
 /** Toggle an item card on/off. */
 function toggleItem(itemId) {
   const item    = ITEMS.find(i => i.id === itemId);
-  if (!item || item.disabled) return;   // ← disabled items are not selectable
+  if (!item || item.disabled) return;
 
-  const card    = document.getElementById(`card-${itemId}`);
-
+  const card     = document.getElementById(`card-${itemId}`);
   const subPanel = document.getElementById(`sub-${itemId}`);
-  const toggle  = document.getElementById(`toggle-${itemId}`);
+  const toggle   = document.getElementById(`toggle-${itemId}`);
 
   if (state.selected.has(itemId)) {
     // Deselect
@@ -708,7 +497,6 @@ function toggleItem(itemId) {
     // Clear sub-option selections for this item
     if (item) item.suboptions.forEach(sub => {
       delete state.suboptions[sub.id];
-      // Deactivate all buttons in this sub group
       document.querySelectorAll(`[data-item="${itemId}"][data-sub="${sub.id}"]`)
               .forEach(btn => btn.classList.remove("active"));
     });
@@ -735,11 +523,6 @@ function selectSub(itemId, subId, value, btn) {
     delete state.suboptions[subId];
   } else {
     state.suboptions[subId] = value;
-    // Update sticks price display dynamically
-    if (subId === "sticks_type") {
-      const priceEl = document.getElementById("price-display-sticks");
-      if (priceEl) priceEl.textContent = value === "wood" ? "50" : "35";
-    }
     btn.classList.add("active");
   }
 
@@ -756,12 +539,11 @@ function getMissingRequiredSubs() {
       if (!sub.required) continue;
       if (sub.type === "image-preview") continue; // display-only, no user choice
       if (sub.type === "file") {
-        // Check if a file has been uploaded for this sub
         if (!state.fileData[sub.id]) {
           missing.push({ itemName: item.name, label: `${item.name} — ${sub.label}` });
         }
       } else {
-        // pills / design-cards / image-choices — check selection
+        // pills / design-cards / image-choices
         if (!state.suboptions[sub.id]) {
           missing.push({ itemName: item.name, label: `${item.name} — ${sub.label}` });
         }
@@ -790,7 +572,7 @@ function validate() {
 
   const missing = getMissingRequiredSubs();
   if (missing.length) {
-    showToast(`Please choose a size/design/photo for: ${missing.map(m => m.itemName).join(", ")}`, "warn");
+    showToast(`Please choose a size/style for: ${missing.map(m => m.itemName).join(", ")}`, "warn");
     return false;
   }
 
@@ -816,51 +598,41 @@ async function handleSubmit(e) {
   const btn   = document.getElementById("submitBtn");
   const label = document.getElementById("submitLabel");
   btn.disabled = true;
-  label.innerHTML = '<span class="spinner"></span> Uploading & Saving...';
+  label.innerHTML = '<span class="spinner"></span> Uploading &amp; Saving...';
 
-  // Build selected items list with sub-option details
+  // Hoodie and Quarter Zip are ONE card in the UI but TWO separate products
+  // on the backend, so the name and size are sent according to the chosen style.
+  const hoodieSelected = state.selected.has("hoodie");
+  const style          = state.suboptions["hoodie_style"];   // "hoodie" | "quarter"
+  const hoodieSize     = state.suboptions["hoodie_size"];
+  const isQuarter      = hoodieSelected && style === "quarter";
+  const styleName      = isQuarter ? "Quarter Zip" : "Hoodie";
+
+  /** Name sent to the backend for each selected item. */
+  const nameOf = item => item.id === "hoodie" ? styleName : item.name;
+
+  // Selected items list with details (Hoodie / Quarter Zip get their own name + size)
   const itemsSummary = [...state.selected].map(id => {
     const item = ITEMS.find(i => i.id === id);
-    const subs = item.suboptions
-      .filter(s => s.type !== "image-preview" && s.type !== "file" && state.suboptions[s.id])
-      .map(s => {
-        const opt = s.options && s.options.find(o => o.value === state.suboptions[s.id]);
-        return `${s.label}: ${opt ? opt.label : state.suboptions[s.id]}`;
-      });
-    return subs.length ? `${item.name} (${subs.join(", ")})` : item.name;
+    if (id === "hoodie") return `${styleName} (Size: ${hoodieSize})`;
+    return item.name;
   }).join(" | ");
 
   const payload = {
-    timestamp          : new Date().toLocaleString("en-EG", { timeZone: "Africa/Cairo" }),
-    fullName           : document.getElementById("fullName").value.trim(),
-    studentId          : document.getElementById("studentId").value.trim(),
-    phone              : document.getElementById("phone").value.trim(),
-    department         : document.getElementById("department").value.trim(),
-    selectedItems : [...state.selected].map(id => {
-    if (id === "sticks") {
-      const type = state.suboptions["sticks_type"];
-      return type === "wood" ? "Photo Sticks Wood" : "Photo Sticks Paper";
-    }
-    return ITEMS.find(i => i.id === id)?.name;
-  }).join(", "),
-    itemsWithDetails   : itemsSummary,
-    hoodieSize         : state.suboptions["hoodie_size"] || state.suboptions["hoddie_size"] || "—",
-    sunglassesDesign   : state.suboptions["sunglasses_design"] || "—",
-    sticksDesign       : state.suboptions["sticks_design"]     || "—",
-    notebookCover      : state.suboptions["notebook_cover"]    || "—",
-    sticksType  : state.suboptions["sticks_type"] || "—",
-    totalAmount        : state.total,
-    Notes        : document.getElementById("Notes").value.trim() || "—",
-    // Image uploads (base64) — uploaded to Google Drive by the Apps Script
-    paymentProof       : state.fileData["payment_proof"]   || null,
-    sticksPhoto        : state.fileData["sticks_photo"]    || null,
-    keychainPhoto      : state.fileData["keychain_photo"]     || null,
-    pinPhoto           : state.fileData["pin_photo"]     || null,
-    framePhoto         : state.fileData["frame_photo"]     || null,
-    notebookPhoto      : state.fileData["notebook_photo"]  || null,
-    newspaperPhoto     : state.fileData["newspaper_photo"] || null,
+    timestamp       : new Date().toLocaleString("en-EG", { timeZone: "Africa/Cairo" }),
+    fullName        : document.getElementById("fullName").value.trim(),
+    studentId       : document.getElementById("studentId").value.trim(),
+    phone           : document.getElementById("phone").value.trim(),
+    department      : document.getElementById("department").value.trim(),
+    selectedItems   : [...state.selected].map(id => nameOf(ITEMS.find(i => i.id === id))).join(", "),
+    itemsWithDetails: itemsSummary,
+    hoodieSize      : hoodieSelected && !isQuarter ? hoodieSize : "—",
+    quarterSize     : isQuarter ? hoodieSize : "—",
+    totalAmount     : state.total,
+    Notes           : document.getElementById("Notes").value.trim() || "—",
+    // Payment receipt — uploaded to Google Drive by the Apps Script
+    paymentProof    : state.fileData["payment_proof"] || null,
   };
-
 
   // Guard: make sure the URL has been set
   if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("YOUR_APPS_SCRIPT")) {
@@ -905,7 +677,6 @@ async function handleSubmit(e) {
     }
   } catch (err) {
     console.error("[Survey]", err);
-    // Show the real error — helps debug Apps Script issues
     showToast("Save failed: " + err.message, "error", 6000);
   } finally {
     btn.disabled = false;
@@ -930,14 +701,11 @@ function resetForm() {
   document.querySelectorAll(".file-upload-zone").forEach(z => z.style.display = "");
   document.querySelectorAll(".file-preview-wrap").forEach(p => p.style.display = "none");
 
-  // Department select needs its placeholder re-selected manually (reset() alone
-  // won't re-trigger our custom placeholder option state in all browsers)
   populateDepartments();
-
   renderSummary();
 }
 
-/** Close the success overlay — restore inert so elements can't receive focus. */
+/** Close the success overlay. */
 function closeSuccess() {
   const overlay = document.getElementById("successOverlay");
   overlay.classList.remove("show");
@@ -989,8 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * Called onload for image-choice images.
- * Sets the wrap's aspect-ratio to match the real image dimensions
- * so the box fits the image perfectly instead of forcing a 1:1 square.
+ * Sets the wrap's aspect-ratio to match the real image dimensions.
  */
 function fitImgWrap(imgEl) {
   const wrap = imgEl.parentElement;
@@ -1010,11 +777,10 @@ function fitImgWrap(imgEl) {
 function imgLoadError(imgEl) {
   const wrap = imgEl.parentElement;
   if (!wrap) return;
-  // Keep the checkmark span but swap image for error message
   const check = wrap.querySelector(".image-choice-check");
   wrap.innerHTML = `<span class="img-error">⚠ Image unavailable</span>`;
   if (check) wrap.appendChild(check);
-  wrap.style.aspectRatio = "4 / 3";   // reasonable fallback ratio
+  wrap.style.aspectRatio = "4 / 3";
   wrap.classList.add("ratio-loaded");
 }
 

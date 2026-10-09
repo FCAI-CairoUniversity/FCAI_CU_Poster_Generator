@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -65,12 +65,24 @@
 
   <!-- Hero -->
   <header class="hero">
-    <div class="hero-badge">Graduation Survey &middot; Class of 2027</div>
-    <h1>What should we get<br>for graduation day?</h1>
-    <p>Help us plan by picking what you want and uploading your transfer receipt.<br>Prices shown are estimates — we'll confirm before any orders are placed.</p>
+    <div class="hero-badge">Graduation Merch &middot; Senior 2027</div>
+    <h1>Senior '27<br>Merch Collection 🎓</h1>
+    <p>
+      Choose your favorite graduation merchandise and upload your payment receipt.<br>
+      All prices are final. Orders will be confirmed once your payment is verified.
+    </p>
+    <div class="hero-img-wrap">
+      <img
+        src="https://lh3.googleusercontent.com/d/1_3-79oJhGx5OX850uup35m5jC1MG6lP9"
+        alt="Senior '27 Merch Preview"
+        class="hero-img"
+        loading="eager"
+        onerror="this.parentElement.style.display='none'"
+      />
+    </div>
   </header>
 
-  <!-- ════ Coming Soon Teaser View (Active on Production) ═══════════════ -->
+  <!-- ════ Coming Soon Teaser View ═══════════════════════════════ -->
   <div id="comingSoonView" class="coming-soon-card" style="display: none;">
     <div class="cs-icon-wrap">
       <div class="cs-icon-glow"></div>
@@ -82,28 +94,33 @@
     </div>
 
     <div class="cs-badge">✨ Exclusive Release</div>
-    <h2 class="cs-title">Graduation Merch is Coming Soon!</h2>
+    <h2 class="cs-title">Graduation Merch Is Coming Soon!</h2>
     <p class="cs-desc">
-      We are preparing the official, limited-edition <strong>FCAI Cairo University Senior '27</strong> Graduation Merchandise collection.<br>
-      T-Shirts, Sunglasses, Wooden Sticks, Notebooks & Frames are being finalized.
+      We are preparing the official, limited-edition
+      <strong>FCAI Cairo University Senior '27</strong> graduation merchandise collection.<br>
+      Hoodies, Quarter Zips, Notebooks, Caps, and Laptop Bags are being finalized.
     </p>
 
     <div class="cs-features">
       <div class="cs-feat-item">
-        <span class="cs-feat-icon">👕</span>
-        <span class="cs-feat-text">Custom T-Shirts</span>
+        <span class="cs-feat-icon">🧥</span>
+        <span class="cs-feat-text">Senior Hoodie</span>
       </div>
       <div class="cs-feat-item">
-        <span class="cs-feat-icon">🕶️</span>
-        <span class="cs-feat-text">Sunglasses</span>
-      </div>
-      <div class="cs-feat-item">
-        <span class="cs-feat-icon">🪄</span>
-        <span class="cs-feat-text">Graduation Sticks</span>
+        <span class="cs-feat-icon">🤐</span>
+        <span class="cs-feat-text">Quarter Zip</span>
       </div>
       <div class="cs-feat-item">
         <span class="cs-feat-icon">📓</span>
-        <span class="cs-feat-text">Senior Notebooks</span>
+        <span class="cs-feat-text">Senior Notebook</span>
+      </div>
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">🧢</span>
+        <span class="cs-feat-text">Senior Cap</span>
+      </div>
+      <div class="cs-feat-item">
+        <span class="cs-feat-icon">💼</span>
+        <span class="cs-feat-text">Laptop Bag</span>
       </div>
     </div>
 
@@ -157,22 +174,25 @@
                    placeholder="e.g. Ahmed Mohamed Ali"
                    maxlength="80" autocomplete="name" required />
           </div>
+
           <div class="field">
             <label for="studentId">Student ID <span class="req">*</span></label>
             <input type="text" id="studentId" name="studentId"
                    placeholder="e.g. 20230001"
                    maxlength="20" autocomplete="off" required />
           </div>
+
           <div class="field">
             <label for="phone">Phone Number <span class="req">*</span></label>
             <input type="tel" id="phone" name="phone"
                    placeholder="e.g. 01xxxxxxxxx"
                    maxlength="15" autocomplete="tel" required />
           </div>
+
           <div class="field">
             <label for="department">Department <span class="req">*</span></label>
             <select id="department" name="department" required>
-              <!-- Options are filled in automatically by survey.js (see DEPARTMENTS list) -->
+              <!-- Options are populated automatically by survey.js using the DEPARTMENTS list. -->
             </select>
           </div>
         </div>
@@ -190,13 +210,13 @@
         </div>
         <div class="section-header-text">
           <h2 class="section-title">Graduation Items</h2>
-          <p class="section-desc">Select what you want &mdash; at least one item is required</p>
+          <p class="section-desc">Choose your items. At least one item is required.</p>
         </div>
         <span class="section-step">Step 2 of 5</span>
       </div>
 
       <div class="section-body">
-        <!-- Item cards rendered by survey.js -->
+        <!-- Item cards are rendered by survey.js. -->
         <div id="itemsContainer" class="items-list"></div>
       </div>
     </section>
@@ -216,13 +236,13 @@
         </div>
         <div class="section-header-text">
           <h2 class="section-title">Order Summary</h2>
-          <p class="section-desc">Review your selection and estimated cost before payment</p>
+          <p class="section-desc">Review your selection and estimated total before payment.</p>
         </div>
         <span class="section-step">Step 3 of 5</span>
       </div>
 
       <div class="section-body">
-        <!-- Summary rendered by survey.js -->
+        <!-- The order summary is rendered by survey.js. -->
         <div id="orderSummary"></div>
       </div>
     </section>
@@ -238,11 +258,16 @@
             <path d="M6 15h2M14 15h4"/>
           </svg>
         </div>
+
         <div class="vf-card-body">
           <div class="vf-methods-tags">
             <span class="pay-badge vf-badge">Vodafone Cash</span>
           </div>
-          <p class="vf-label">حوّل على فودافون كاش دايركت أو انستاباي ل فودافون كاش</p>
+
+          <p class="vf-label">
+            Transfer directly to Vodafone Cash or use InstaPay to send money to the Vodafone Cash wallet.
+          </p>
+
           <div class="vf-number-row">
             <span class="vf-number">01055496208</span>
             <button type="button" class="vf-copy-btn" onclick="SurveyApp.copyVFNumber(this)" title="Copy number">
@@ -252,7 +277,10 @@
               <span>Copy</span>
             </button>
           </div>
-          <p class="vf-hint">بعد التحويل، ارفع صورة الإيصال في الخطوة اللي جاية 👇</p>
+
+          <p class="vf-hint">
+            After completing your transfer, upload a screenshot of the receipt in the next step.
+          </p>
         </div>
       </div>
 
@@ -261,7 +289,7 @@
         <button type="button" class="instapay-toggle-btn" id="ipGuideToggleBtn" onclick="SurveyApp.toggleInstaPayGuide()" aria-expanded="false">
           <div class="ip-toggle-content">
             <span class="ip-logo-pill">⚡ InstaPay</span>
-            <span class="ip-toggle-text">ازاي تدفع بـ انستاباي للمحفظة؟ اضغط لعرض الخطوات بالصور 📸</span>
+            <span class="ip-toggle-text">How do you transfer money from InstaPay to a wallet? Click to view the illustrated guide.</span>
           </div>
           <span class="ip-toggle-chevron">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -274,68 +302,81 @@
           <div class="ip-guide-note">
             <span class="ip-note-icon">⚠️</span>
             <div class="ip-note-text">
-              <strong>تنبيه هام جداً:</strong> التحويل من تطبيق انستاباي يتم باختيار <strong>"محفظة إلكترونية" (Electronic Wallet)</strong> وليس حساب بنكي!
+              <strong>Important:</strong> In the InstaPay app, select
+              <strong>"Electronic Wallet"</strong>, not "Bank Account".
             </div>
           </div>
 
           <div class="ip-steps-grid">
+
             <!-- Step 1 Card -->
-            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3', 'الخطوة 1: من الصفحة الرئيسية في تطبيق انستاباي اضغط على (إرسال نقود)')">
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3', 'Step 1: From the InstaPay home screen, tap Send Money.')">
               <div class="ip-step-header">
                 <span class="ip-step-number">1</span>
                 <div class="ip-step-info">
-                  <span class="ip-step-heading">الخطوة الأولى</span>
-                  <span class="ip-step-desc">من الصفحة الرئيسية في التطبيق، اضغط على <strong>"إرسال نقود"</strong></span>
+                  <span class="ip-step-heading">Step One</span>
+                  <span class="ip-step-desc">From the app home screen, tap <strong>"Send Money"</strong>.</span>
                 </div>
               </div>
+
               <div class="ip-image-container">
-                <img src="https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3" alt="الخطوة 1 - إرسال نقود من انستاباي" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://lh3.googleusercontent.com/d/1V3wyoSxHIGGQLDGjWLUATOhHchwy3-d3" alt="Step 1 - Send Money in InstaPay" loading="lazy" referrerpolicy="no-referrer">
                 <div class="ip-zoom-badge">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                  <span>اضغط لتكبير الصورة 🔍</span>
+                  <span>Click to zoom in</span>
                 </div>
               </div>
             </div>
 
             <!-- Step 2 Card -->
-            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0', 'الخطوة 2: اختر محفظة إلكترونية، اكتب رقم المحفظة 01055496208 والمبلغ المطلوب ثم اضغط التالي')">
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0', 'Step 2: Select Electronic Wallet, enter 01055496208 and the amount, then tap Next.')">
               <div class="ip-step-header">
                 <span class="ip-step-number">2</span>
                 <div class="ip-step-info">
-                  <span class="ip-step-heading">الخطوة الثانية</span>
-                  <span class="ip-step-desc">اختر أيقونة <strong>"محفظة إلكترونية"</strong>، واكتب الرقم <code>01055496208</code> والمبلغ، ثم اضغط <strong>"التالي"</strong></span>
+                  <span class="ip-step-heading">Step Two</span>
+                  <span class="ip-step-desc">
+                    Select <strong>"Electronic Wallet"</strong>, enter the number
+                    <code>01055496208</code> and the amount, then tap <strong>"Next"</strong>.
+                  </span>
                 </div>
               </div>
+
               <div class="ip-image-container">
-                <img src="https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0" alt="الخطوة 2 - اختيار محفظة إلكترونية وإدخال الرقم والمبلغ" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://lh3.googleusercontent.com/d/1cn4HbDwElY7_YRiRwMP2Q1pIysTRriD0" alt="Step 2 - Select Electronic Wallet and enter the number and amount" loading="lazy" referrerpolicy="no-referrer">
                 <div class="ip-zoom-badge">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                  <span>اضغط لتكبير الصورة 🔍</span>
+                  <span>Click to zoom in</span>
                 </div>
               </div>
             </div>
 
             <!-- Step 3 Card -->
-            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih', 'الخطوة 3: تأكيد التحويل - يظهر اسم المستلم (سيف ا**** ع***) ورقم المحفظة (01055496208)')">
+            <div class="ip-step-card" onclick="SurveyApp.openLightbox('https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih', 'Step 3: Verify the recipient name and wallet number 01055496208, then confirm the transfer.')">
               <div class="ip-step-header">
                 <span class="ip-step-number">3</span>
                 <div class="ip-step-info">
-                  <span class="ip-step-heading">الخطوة الثالثة</span>
-                  <span class="ip-step-desc">سيظهر لك اسم المستلم: <strong>سيف ا****</strong> والرقم <code>01055496208</code>، تأكد واضغط <strong>"تأكيد"</strong></span>
+                  <span class="ip-step-heading">Step Three</span>
+                  <span class="ip-step-desc">
+                    Verify the recipient's name and the wallet number
+                    <code>01055496208</code>, then tap <strong>"Confirm"</strong>.
+                  </span>
                 </div>
               </div>
+
               <div class="ip-image-container">
-                <img src="https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih" alt="الخطوة 3 - تأكيد التحويل واسم المستلم" loading="lazy" referrerpolicy="no-referrer">
+                <img src="https://lh3.googleusercontent.com/d/1zwjzQjrR2I3CFj7Fq9z1pP-ZbLn5efih" alt="Step 3 - Verify the recipient and confirm the transfer" loading="lazy" referrerpolicy="no-referrer">
                 <div class="ip-zoom-badge">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                  <span>اضغط لتكبير الصورة 🔍</span>
+                  <span>Click to zoom in</span>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <div class="ip-guide-footer">
-            <span>📸 بعد إتمام التحويل بنجاح، التقط سكرين شوت للإيصال وارفعها في الخطوة التالية بالأسفل 👇</span>
+            <span>
+              After completing the transfer successfully, take a screenshot of the receipt and upload it in the section below.
+            </span>
           </div>
         </div>
       </div>
@@ -350,10 +391,14 @@
             <line x1="2" y1="10" x2="22" y2="10"/>
           </svg>
         </div>
+
         <div class="section-header-text">
-          <h2 class="section-title">Payment Transfer Receipt <span class="req" style="color:#ef4444">*</span></h2>
-          <p class="section-desc">Upload a screenshot of your transfer (Vodafone Cash, InstaPay, etc.)</p>
+          <h2 class="section-title">
+            Payment Transfer Receipt <span class="req" style="color:#ef4444">*</span>
+          </h2>
+          <p class="section-desc">Upload a screenshot of your transfer (Vodafone Cash, InstaPay, etc.).</p>
         </div>
+
         <span class="section-step">Step 4 of 5</span>
       </div>
 
@@ -365,21 +410,32 @@
                 <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
               </svg>
             </div>
-            <span class="file-upload-title">Click to upload payment screenshot <span class="req">*</span></span>
-            <span class="file-upload-hint payment-clear-hint">⚠️ تأكد إن صورة التحويل واضحة ومش مقصوصة &middot; Max 5MB &middot; JPG, PNG, WEBP</span>
+
+            <span class="file-upload-title">
+              Click to upload your payment receipt <span class="req">*</span>
+            </span>
+
+            <span class="file-upload-hint payment-clear-hint">
+              ⚠️ Make sure the receipt is clear and uncropped &middot; Max 5MB &middot; JPG, PNG, WEBP
+            </span>
+
             <input type="file" id="finput-payment_proof" class="file-input-hidden"
                    accept="image/*"
                    data-sub="payment_proof"
                    data-max="5"
                    onchange="SurveyApp.handleFileSelect(this)" required />
           </label>
+
           <div class="file-preview-wrap" id="fpreview-payment_proof" style="display:none">
             <img class="file-preview-img" id="fimg-payment_proof" src="" alt="Payment Receipt Preview">
+
             <div class="file-preview-info">
               <span class="file-preview-name" id="fname-payment_proof"></span>
+
               <button type="button" class="file-remove-btn"
                       onclick="SurveyApp.clearFile('payment_proof')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Remove
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                Remove
               </button>
             </div>
           </div>
@@ -387,7 +443,7 @@
       </div>
     </section>
 
-    <!-- ── Section 5 · Suggestions ────────────────────────────── -->
+    <!-- ── Section 5 · Notes ──────────────────────────────────── -->
     <section class="form-section" id="sec-suggestions">
       <div class="section-header">
         <div class="section-icon">
@@ -395,17 +451,19 @@
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
         </div>
+
         <div class="section-header-text">
-          <h2 class="section-title">Notes</h2>
-          <p class="section-desc">Write any additional notes or special requests here (optional)</p>
+          <h2 class="section-title">Additional Notes</h2>
+          <p class="section-desc">Add any additional notes or special requests (optional).</p>
         </div>
+
         <span class="section-step">Step 5 of 5</span>
       </div>
 
       <div class="section-body">
         <div class="field">
           <textarea id="Notes" name="Notes" rows="4"
-                    placeholder="Write any additional notes or special requests here..."></textarea>
+                    placeholder="Enter any additional notes or special requests..."></textarea>
         </div>
       </div>
     </section>
@@ -418,10 +476,11 @@
           <polyline points="17 21 17 13 7 13 7 21"/>
           <polyline points="7 3 7 8 15 8"/>
         </svg>
-        <span id="submitLabel">Save My Response</span>
+        <span id="submitLabel">Submit My Order</span>
       </button>
+
       <p class="privacy-note">
-        Your data is stored privately and shared only with the graduation planning team.
+        Your information is stored privately and shared only with the graduation planning team.
       </p>
     </div>
 
@@ -436,12 +495,18 @@
         <polyline points="20 6 9 17 4 12"/>
       </svg>
     </div>
-    <h2>Response Saved!</h2>
-    <p>Thank you, <strong id="successName"></strong>!<br>Your selections and payment receipt have been recorded successfully.</p>
+
+    <h2>Order Submitted Successfully!</h2>
+    <p>
+      Thank you, <strong id="successName"></strong>!<br>
+      Your selections and payment receipt have been submitted successfully.
+    </p>
+
     <div class="success-total-row">
       <span>Estimated Total</span>
       <strong id="successTotal">0 EGP</strong>
     </div>
+
     <button class="btn-dismiss" onclick="SurveyApp.closeSuccess()">Done</button>
   </div>
 </div>
@@ -449,16 +514,17 @@
 <!-- ══ Toast Container ═══════════════════════════════════════════ -->
 <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
-<!-- ══ Image Lightbox Modal ─────────────────────────────────────── -->
+<!-- ══ Image Lightbox Modal ══════════════════════════════════════ -->
 <div class="img-lightbox-overlay" id="imgLightboxOverlay" onclick="SurveyApp.closeLightbox(event)" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="img-lightbox-card">
-    <button type="button" class="img-lightbox-close" onclick="SurveyApp.closeLightbox()" title="إغلاق (Esc)">
+    <button type="button" class="img-lightbox-close" onclick="SurveyApp.closeLightbox()" title="Close (Esc)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
+
     <div class="img-lightbox-body">
-      <img id="imgLightboxSrc" src="" alt="InstaPay guide preview">
+      <img id="imgLightboxSrc" src="" alt="InstaPay Guide Preview">
       <div id="imgLightboxCaption" class="img-lightbox-caption"></div>
     </div>
   </div>

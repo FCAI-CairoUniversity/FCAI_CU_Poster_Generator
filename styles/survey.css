@@ -235,6 +235,25 @@
   line-height: 1.65;
 }
 
+.hero-img-wrap {
+  margin-top: 28px;
+  width: 100%;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 40px rgba(77, 142, 219, 0.12);
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
 /* ══ Survey Form ════════════════════════════════════════════════ */
 .survey-form {
   width: 100%;
