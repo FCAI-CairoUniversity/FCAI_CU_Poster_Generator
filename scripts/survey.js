@@ -41,7 +41,7 @@ const ITEMS = [
   {
     id         : "hoodie",
     name       : "Senior Hoodie / Quarter Zip",
-    description: "The official Senior '27 hoodie and quarter zip, available in sizes S to 2XL and featuring our exclusive senior design.",
+    description: "The official Senior '27 hoodie and quarter zip, available in sizes M to 2XL and featuring our exclusive senior design.",
     price      : 670,
     icon       : "shirt",
     suboptions : [
@@ -61,7 +61,6 @@ const ITEMS = [
         required: true,
         type    : "pills",
         options : [
-          { value: "S",   label: "S"   },
           { value: "M",   label: "M"   },
           { value: "L",   label: "L"   },
           { value: "XL",  label: "XL"  },
@@ -74,6 +73,13 @@ const ITEMS = [
         type   : "image-preview",
         image  : "https://lh3.googleusercontent.com/d/1r3zOO8JSXobMVTH2gManKsAGSp1EIbtb",
         caption: "Size Guide — Hoodie & Quarter Zip",
+      },
+      {
+        id        : "hoodie_print_name",
+        label     : "Name to Print",
+        required  : true,
+        type      : "text",
+        placeholder: "Enter the name to print on your hoodie or quarter zip",
       },
     ],
   },
@@ -284,6 +290,24 @@ function renderSuboption(itemId, sub) {
     </div>`;
   }
 
+  
+  if (sub.type === "text") {
+    return `
+    <div class="field">
+      <input
+        type="text"
+        id="input-${sub.id}"
+        class="suboption-text-input"
+        placeholder="${sub.placeholder || ""}"
+        maxlength="40"
+        autocomplete="off"
+        oninput="SurveyApp.updateTextSub('${itemId}', '${sub.id}', this.value)"
+      />
+    </div>
+    `;
+  }
+
+
   if (sub.type === "design-cards") {
     return `<div class="design-cards-row" id="row-${sub.id}">
       ${sub.options.map(opt => `
@@ -478,6 +502,16 @@ function renderSummary() {
 //  🖱  INTERACTION HANDLERS
 // ══════════════════════════════════════════════════════════════════
 
+
+/** Update a text sub-option. */
+function updateTextSub(itemId, subId, value) {
+  if (!state.selected.has(itemId)) return;
+
+  state.suboptions[subId] = value;
+  renderSummary();
+}
+
+
 /** Toggle an item card on/off. */
 function toggleItem(itemId) {
   const item    = ITEMS.find(i => i.id === itemId);
@@ -612,11 +646,19 @@ async function handleSubmit(e) {
   const nameOf = item => item.id === "hoodie" ? styleName : item.name;
 
   // Selected items list with details (Hoodie / Quarter Zip get their own name + size)
+  
+  const printName = state.suboptions["hoodie_print_name"] || "";
+
   const itemsSummary = [...state.selected].map(id => {
     const item = ITEMS.find(i => i.id === id);
-    if (id === "hoodie") return `${styleName} (Size: ${hoodieSize})`;
+
+    if (id === "hoodie") {
+      return `${styleName} (Size: ${hoodieSize}, Print Name: ${printName.trim()})`;
+    }
+
     return item.name;
   }).join(" | ");
+
 
   const payload = {
     timestamp       : new Date().toLocaleString("en-EG", { timeZone: "Africa/Cairo" }),
@@ -628,6 +670,15 @@ async function handleSubmit(e) {
     itemsWithDetails: itemsSummary,
     hoodieSize      : hoodieSelected && !isQuarter ? hoodieSize : "—",
     quarterSize     : isQuarter ? hoodieSize : "—",
+    
+    hoodiePrintName : hoodieSelected && !isQuarter
+      ? state.suboptions["hoodie_print_name"].trim()
+      : "—",
+
+    quarterPrintName: isQuarter
+      ? state.suboptions["hoodie_print_name"].trim()
+      : "—",
+
     totalAmount     : state.total,
     Notes           : document.getElementById("Notes").value.trim() || "—",
     // Payment receipt — uploaded to Google Drive by the Apps Script
@@ -854,6 +905,7 @@ document.addEventListener("keydown", (e) => {
 const SurveyApp = {
   toggleItem,
   selectSub,
+  updateTextSub,
   closeSuccess,
   handleFileSelect,
   clearFile,
